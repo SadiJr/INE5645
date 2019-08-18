@@ -525,3 +525,8 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/visualstudio,visualstudiocode
 # End of https://www.gitignore.io/api/java,maven,eclipse))))))))
+
+# TeX and TeXMaker files
+*.aux
+*.gz
+*.toc
