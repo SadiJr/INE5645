@@ -130,6 +130,7 @@ local.properties
 
 # Log file
 *.log
+logs/
 
 # BlueJ files
 *.ctxt
@@ -530,3 +531,19 @@ MigrationBackup/
 *.aux
 *.gz
 *.toc
+
+# Ignoring all executables files with command find . -executable -type f >>.gitignore
+./src/c/main/main
+./src/c/Makefile
+./src/c/exec
+./.git/hooks/update.sample
+./.git/hooks/pre-commit.sample
+./.git/hooks/pre-applypatch.sample
+./.git/hooks/commit-msg.sample
+./.git/hooks/pre-push.sample
+./.git/hooks/post-update.sample
+./.git/hooks/fsmonitor-watchman.sample
+./.git/hooks/pre-rebase.sample
+./.git/hooks/prepare-commit-msg.sample
+./.git/hooks/pre-receive.sample
+./.git/hooks/applypatch-msg.sample
