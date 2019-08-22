@@ -14,9 +14,8 @@
 #define TRUE 1
 
 void treatInput(char* inputMessage, char* errorMessage, int *parameter);
-void createThreads(int threadsNumber);
+void createThreads(int threadsNumber, int bubble);
 void *bubbleSort(void *args);
-// void swap(int *x, int *y);
 void swap(int row, int column);
 void printArray();
 
@@ -87,7 +86,11 @@ int main(int argc, char **argv) {
 	printArray();
 	printf("\n\n");
 
-	createThreads(threads);
+	createThreads(threads, TRUE);
+	
+	free(arr);
+	pthread_exit(NULL);
+	
 	return TRUE;
 }
 
@@ -105,21 +108,29 @@ void treatInput(char* inputMessage, char* errorMessage, int *parameter) {
 	} while(!expectedInput);
 }
 
-void createThreads(int threadsNumber) {
+void createThreads(int threadsNumber, int bubble) {
     pthread_t threads[threadsNumber];
 
     for (int i = 0; i < threadsNumber; i++) {
 		printf("Creating thread %i\n", i);
-        pthread_create(&threads[i], NULL, bubbleSort, (void *) (intptr_t)i);
+		if(bubble) {
+        	pthread_create(&threads[i], NULL, bubbleSort, (void *) (intptr_t)i);
+		} else {
+			//FIXME Implement another algorithm
+			//pthread_create(&threads[i], NULL, bubbleSort, (void *) (intptr_t)i);
+		}
     }
 
+	int rc;
     for (int i = 0; i < threadsNumber; i++) {
-        pthread_join(threads[i], NULL);
-	}
+        rc = pthread_join(threads[i], NULL);
+		if (rc) {
+        	printf("ERROR; return code from pthread_create() is %d\n", rc);
+         	exit(-1);
+        }
+    }
 	printf("\nFinish algorithm. The result is:\n\n\n");
 	printArray();
-
-	free(arr);
 }
 
 void *bubbleSort(void *args) {
@@ -150,13 +161,6 @@ void swap(int row, int column) {
 	arr[row][column + 1] = temp;
 }
 
-/*
-void swap(int *x, int *y) { 
-    int temp = *x; 
-    *x = *y; 
-    *y = temp; 
-}
-*/
 void printArray() {
 	for(int i = 0; i < rowsNumber; i++) {
 		for(int j = 0; j < columnSize; j++) {
