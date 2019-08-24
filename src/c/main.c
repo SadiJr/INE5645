@@ -6,9 +6,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdint.h>
-#include "../resources/log.h"
+// #include "../resources/log.h"
 
-#define FILE_NAME "../logs/log.log"
+// #define FILE_NAME "../logs/log.log"
 #define FALSE 0
 #define TRUE 1
 
@@ -27,6 +27,15 @@ int threadsNumber;
 int main(int argc, char ** argv) {
   long number_of_processors = sysconf(_SC_NPROCESSORS_ONLN);
 
+  struct stat st = {0};
+
+    // if (stat("../logs", &st) == -1) {
+    //     mkdir("../logs", 0700);
+    // }
+
+    // FILE *file = fopen(FILE_NAME, "ab+");
+    // log_set_fp(file);
+
   int row, column, threads;
   treatInput("Expected numbers of rows: ", "Please type only numbers, idiot!\n", & row);
   treatInput("Expected size of columns: ", "Please type only numbers, idiot!\n", & column);
@@ -41,10 +50,6 @@ int main(int argc, char ** argv) {
   threadsNumber = threads;
   columnSize = column;
   rowsNumber = row;
-
-  printf("Row %i\n", row);
-  printf("Column %i\n", column);
-  printf("Threads %i\n", threads);
 
   arr = (int**) malloc(row * sizeof(int *));
   int **arr2 = (int**) malloc(row * sizeof(int *));
@@ -105,15 +110,14 @@ void createThreads(int threadsNumber, int bubble) {
   pthread_t threads[threadsNumber];
   double total;
   clock_t start;
+
+  start = clock();
   for (int i = 0; i < threadsNumber; i++) {
     printf("Creating thread %i\n", i);
-    if (bubble) {
-      start = clock();
-      printf("Init process time in %ld", start);
+    if (bubble) {    
       pthread_create( & threads[i], NULL, bubble_sort, (void * )(intptr_t) i);
     } else {
       start = clock();
-      printf("Init process time in %ld", start);
       pthread_create( & threads[i], NULL, init_merge_sort, (void * )(intptr_t) i);
     }
   }
@@ -127,13 +131,12 @@ void createThreads(int threadsNumber, int bubble) {
     }
   }
   clock_t end = clock();
-  printf("\nEnd process time in %ld", end);
   total = ((double) (end - start)) / CLOCKS_PER_SEC;
   printf("\nFinish algorithm. Total time to proccess array is %f seconds and the result is:\n\n\n", total);
   printArray();
 }
 
-void * bubble_sort(void * args) {
+void *bubble_sort(void *args) {
   int running = TRUE;
   int row = (intptr_t) args;
 
@@ -153,7 +156,7 @@ void * bubble_sort(void * args) {
     }
     row += threadsNumber;
   }
-  pthread_exit((void * ) args);
+  pthread_exit((void *) args);
 }
 
 void swap(int row, int column) {
