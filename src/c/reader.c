@@ -8,200 +8,278 @@
 #include <pthread.h>
 #include "process.h"
 
-int row, column;
+// Methods
+void merge_sort(int l, int r);
+void merge_sort_sub_process();
+void bubble_sort_sub_process();
+void initialize_mutex();
+void bubble();
 
-void bubble(int shmid, caralho *arr);
-void swap(caralho * array, int row, int column);
-void treatInput(char* inputMessage, char* errorMessage, int* parameter);
+// Atributes
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-void printArray(int **array) {
-    int i, j;
-    for(i = 0; i < row; i++) {
-        for(j = 0; j < column; j++) {
-            printf("%d ", array[i][j]);
-        }
-        printf("\n");
+key_t controll = 77;
+key_t matrix_key = 90;
+
+int shmid_controll;
+int shmid_matrix;
+
+struct controll *ctrl;
+void *shared_memory_controll;
+
+int *matrix;
+void *shared_memory_matrix;
+clock_t start;
+clock_t end;
+double total;
+int processors;
+
+void read_matrix() {
+    shared_memory_matrix = (void *)0;
+
+    if ((shmid_matrix = shmget(matrix_key, sizeof(int) * (ctrl->rowSize * ctrl->columnSize),
+            0666 | IPC_CREAT)) < 0) {
+        perror("shmget in matrix");
+        exit(1);
+    }
+
+    if ((shared_memory_matrix = shmat(shmid_matrix, NULL, 0)) == -1) {
+        perror("shmat  in matrix");
+        _exit(1);
+    }
+    printf("\nMatrix Memory attached at %X\n", (int)shared_memory_matrix);
+    
+    matrix = (int*)shared_memory_matrix;
+
+    if(matrix[0] == NULL) {
+        printf("CUZÃO GOSTOSO DO CARALHO\n");
+        return;
     }
 }
 
-int main()
-{
-    int shmid;
-    key_t key = 1234;
+void read_controll() {
+    shared_memory_controll = (void *)0;
 
-    int processors;
-
-    treatInput("Expected rows: ", "Please type only numbers, idiot!", &row);
-    treatInput("Expected columns: ", "Please type only numbers, idiot!", &column);
-    treatInput("Expected processors: ", "Please type only numbers, idiot!", &processors);
-
-    caralho *arr;
-    if ((shmid = shmget(key, sizeof(arr), IPC_CREAT | 0666)) < 0) {
-        perror("shmget");
+    if ((shmid_controll = shmget(controll, sizeof(struct controll *), 0666 | IPC_CREAT)) < 0) {
+        perror("shmget in controll");
         exit(1);
-    } 
+    }
 
-    void *shared_memory = (void *)0;
-
-    if ((shared_memory = shmat(shmid, 0, 0)) == -1) {
-        perror("shmat");
+    if ((shared_memory_controll = shmat(shmid_controll, NULL, 0)) == -1) {
+        perror("shmat in controll");
         _exit(1);
     }
-    arr = (caralho *)shared_memory;
-    arr->array = (int**)malloc(row * sizeof(int*));
+    printf("\nControll Memory attached at %X\n", (int)shared_memory_controll);
 
-    srand(time(NULL));
-    for (int i = 0; i < row; i++) 
-        arr->array[i] = (int*)malloc(sizeof(int) * column);
+    ctrl = (struct controll*)shared_memory_controll;
+    print_details(ctrl);
+}
+
+int main() {
+    read_controll();
     
-    pthread_mutex_init(&arr->lock, 0);
-    arr->row = 0;
-   
-    printf("Creating matriz with random numbers\n");
-   
-    int i, j;
-    for (i = 0; i < row; i++) {
-        for (j = 0; j < column; j++) {
-            int random = rand() % 1000;
-            arr->array[i][j] = random;
-        }
+    while(ctrl->populated == 0) {
+        printf("Waiting another program write data in matriz...\n");
+        fflush(stdin);
+        sleep(1);
     }
-    printArray(arr->array);
+    
+    initialize_mutex();
+    bubble_sort_sub_process();
 
-    int row = 0;
+    while(ctrl->populated == 0);
+    merge_sort_sub_process();
+    ctrl->finished = 1;
+    return 0;
+}
+
+void bubble_sort_sub_process() {
+    treatInput("Expected number of processors: ", ERROR_MESSAGE, &processors);
     pid_t pid, wpid;
-    int status = 0;
+    int i, status = 0;
 
+    start = clock();
     for(i = 0; i < processors; i++) {
-        pid_t pid = fork();
+        pid = fork();
         if(pid < 0) {
             printf("Error in creation of process");
             exit(EXIT_FAILURE);
         } else if(pid == 0) {
             printf("\n\nI am the child!\tMy process id: %d\n",getpid());
-            bubble(shmid, arr);
+            bubble();
             printf("Finish child %d\n", getpid());
             exit(0);
         }
     }
     while ((wpid = wait(&status)) == 0);
 
-    sleep(5);
-    printf("\n\nWakeup\n\n");
-    if ((shared_memory = shmat(shmid, 0, 0)) == -1) {
-        perror("shmat");
-        _exit(1);
-    }
-    arr = (caralho *)shared_memory;
-    printf("Last row %d\n", arr->row);
+    end = clock();
+    total = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("\n\n\nFinish algorithm. Total time to proccess array is %f seconds and the result is:\n\n\n", total);
 
-    printArray(arr->array);
-
-    if (shmdt(arr) == -1) {
-         perror("shmdt");
-         _exit(1);
-    }
-    /* Delete the shared memory segment. */
-    if (shmctl(shmid, IPC_RMID, NULL) == -1) {
-        perror("shmctl");
-        _exit(1);
-    }
-    return 0;
+    ctrl->populated = 0;
 }
 
-void swap(caralho * array, int row, int column) {
-    int temp = array->array[row][column];
-    array->array[row][column] = array->array[row][column + 1];
-    array->array[row][column + 1] = temp;
+void initialize_mutex() {
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init(&attr);
+    pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
+    pthread_mutex_init(&ctrl->mutex, &attr);
 }
 
-/*
-void bubble(int r, int **array) {
-    if(r >= row) {
-        exit(EXIT_SUCCESS);
-    }
-
-    printf("Fork array is:\n");
-    printArray(array);
-
-    for (int i = 0; i < column; i++) {
-        for (int j = 0; j < column - 1; j++) {
-            if (array[r][j] > array[r][j + 1]) {
-                swap(array, r, j);
-            }
-        }
-    }
-    printf("\nOrdened array row %d is:\n\n", r);
-    printArray(array);
+void swap(int index)
+{
+    int temp = matrix[index];
+    matrix[index] = matrix[index + 1];
+    matrix[index + 1] = temp;
 }
-*/
 
-void bubble(int shmid, caralho *arr) {
+void bubble() {
+    read_matrix();
     int running = 1;
 
-    // int shmid;
-    // caralho *arr;
-    // if ((shmid = shmget((key_t)1234, sizeof(arr), IPC_CREAT | 0666)) < 0) {
-    //     perror("shmget");
-    //     exit(1);
-    // } 
-    // void *shared_memory = (void *)0;
-
-    // if ((shared_memory = shmat(shmid, 0, 0)) == -1) {
-    //     perror("shmat");    
-    // }
-    
-    // printf("Memory attached at %X\n", (int)shared_memory);
-    // arr = (caralho *)shared_memory;
-    
     while (running) {
-        pthread_mutex_lock(&arr->lock);
-        int r = arr->row;
-        arr->row++;
-        pthread_mutex_unlock(&arr->lock);
+        pthread_mutex_lock(&ctrl->mutex);
+        int r = ctrl->row;
+        printf("\nCurrent process %d working in row  %d\n", getpid(), r);
+        ctrl->row++;
+        pthread_mutex_unlock(&ctrl->mutex);
 
-        if(r >= row) {
+        if(r >= ctrl->rowSize) {
             running = 0;
             continue;
         }
-        int **temp = arr->array;
 
-        for (int i = 0; i < column; i++) {
-            for (int j = 0; j < column - 1; j++) {
-                if (temp[r][j] > temp[r][j + 1]) {
-                    swap(arr, r, j);
+        int i, j;
+        for(i = 0; i < ctrl->columnSize; i++) {
+            for(j = 0; j < ctrl->columnSize -1 ; j++) {
+                if (matrix[i * ctrl->columnSize + j] > matrix[i * ctrl->columnSize + j + 1]) {
+                    swap(i * ctrl->columnSize + j);
                 }
             }
         }
-        pthread_mutex_lock(&arr->lock);
-        printf("\nOrdened array by process %d in row %d is:\n\n", getpid(), r);
-        printArray(temp);
-        pthread_mutex_unlock(&arr->lock);
-        sleep(1);
+        pthread_mutex_lock(&ctrl->mutex);
+        print_array(matrix, ctrl->rowSize, ctrl->columnSize);
+        pthread_mutex_unlock(&ctrl->mutex);
     }
-    if ((shmdt(arr)) == -1) {
-      perror("shmdt");
-      return 1;
-   }
-
-   printf("Writing Process: Complete\n");
-   return 0;
-
 }
 
+/*  Because C is not capable of having 2 identically named functions
+    which take different parameters.
+    Resumming, no overloading. :(
+*/
+void init_merge() { 
+    
+    read_matrix();
+    int running = 1;
 
-void treatInput(char* inputMessage, char* errorMessage, int* parameter)
-{
-    int expectedInput = 0;
-    do {
-        printf(inputMessage);
-        if (scanf("%d", parameter) == 1) {
-            expectedInput = 1;
-        }
-        else {
-            printf(errorMessage);
-            fgetc(stdin);
+    while (running) {
+        pthread_mutex_lock(&ctrl->mutex);
+        int r = ctrl->row;
+        printf("\nCurrent process %d working in row %d\n", getpid(), r);
+        ctrl->row++;
+        pthread_mutex_unlock(&ctrl->mutex);
+
+        if(r >= ctrl->rowSize) {
+            running = 0;
             continue;
         }
-    } while (!expectedInput);
+
+        merge_sort(r * ctrl->columnSize, r * ctrl->columnSize + ctrl->columnSize -1);
+        pthread_mutex_lock(&ctrl->mutex);
+        print_array(matrix, ctrl->rowSize, ctrl->columnSize);
+        pthread_mutex_unlock(&ctrl->mutex);
+    }
+}
+
+void merge(int l, int m, int r) 
+{ 
+    int i, j, k; 
+    int n1 = m - l + 1; 
+    int n2 =  r - m; 
+  
+    /* create temp arrays */
+    int L[n1], R[n2]; 
+  
+    /* Copy data to temp arrays L[] and R[] */
+    for (i = 0; i < n1; i++) 
+        L[i] = matrix[l + i]; 
+    for (j = 0; j < n2; j++) 
+        R[j] = matrix[m + 1+ j]; 
+  
+    /* Merge the temp arrays back into arr[l..r]*/
+    i = 0; // Initial index of first subarray 
+    j = 0; // Initial index of second subarray 
+    k = l; // Initial index of merged subarray 
+    while (i < n1 && j < n2) 
+    { 
+        if (L[i] <= R[j]) 
+        { 
+            matrix[k] = L[i]; 
+            i++; 
+        } 
+        else
+        { 
+            matrix[k] = R[j]; 
+            j++; 
+        } 
+        k++; 
+    } 
+  
+    /* Copy the remaining elements of L[], if there 
+       are any */
+    while (i < n1) 
+    { 
+        matrix[k] = L[i]; 
+        i++; 
+        k++; 
+    } 
+  
+    /* Copy the remaining elements of R[], if there 
+       are any */
+    while (j < n2) 
+    { 
+        matrix[k] = R[j]; 
+        j++; 
+        k++; 
+    } 
+}
+
+void merge_sort(int l, int r)
+{
+    if (l < r) {
+        // Same as (l+r)/2, but avoids overflow for
+        // large l and h
+        int m = l + (r - l) / 2;
+
+        // Sort first and second halves
+        merge_sort(l, m);
+        merge_sort(m + 1, r);
+
+        merge(l, m, r);
+    }
+}
+
+void merge_sort_sub_process() {
+    pid_t pid, wpid;
+    int i, status = 0;
+    
+    start = clock();
+    for(i = 0; i < processors; i++) {
+        pid = fork();
+        if(pid < 0) {
+            printf("Error in creation of process");
+            exit(EXIT_FAILURE);
+        } else if(pid == 0) {
+            printf("\n\nI am the child!\tMy process id: %d\n",getpid());
+            init_merge();
+            printf("Finish child %d\n", getpid());
+            exit(0);
+        }
+    }
+    while ((wpid = wait(&status)) == 0);
+
+    end = clock();
+    total = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("\n\n\nFinish algorithm. Total time to proccess array is %f seconds\n\n\n", total);
 }
