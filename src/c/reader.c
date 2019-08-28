@@ -89,9 +89,9 @@ int main() {
   initialize_mutex();
   bubble_sort_sub_process();
 
-  while (ctrl->populated == 0)
-    ;
+  while (ctrl->populated == 0);
   merge_sort_sub_process();
+  pthread_mutex_destroy(&ctrl->mutex);
   ctrl->finished = 1;
   return 0;
 }

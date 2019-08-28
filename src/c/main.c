@@ -112,7 +112,6 @@ void createThreads(int threadsNumber, int bubble) {
     if (bubble) {
       pthread_create(&threads[i], NULL, bubble_sort, (void *)(intptr_t)i);
     } else {
-      start = clock();
       pthread_create(&threads[i], NULL, init_merge_sort, (void *)(intptr_t)i);
     }
   }

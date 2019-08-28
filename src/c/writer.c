@@ -44,6 +44,8 @@ void finish_shared_memory() {
     perror("shmctl in matrix");
     _exit(1);
   }
+
+  free(temp);
 }
 
 void create_random_matrix() {
