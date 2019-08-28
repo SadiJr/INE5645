@@ -547,3 +547,11 @@ src/c/exec
 .git/hooks/pre-receive.sample
 .git/hooks/applypatch-msg.sample
 
+
+src/c/writer
+
+src/c/reader
+
+*.json
+
+src/c/main
