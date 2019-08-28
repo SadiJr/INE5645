@@ -32,7 +32,8 @@ int main(int argc, char **argv) {
              &column);
   treatInput("Expected number of threads: ",
              "Please type only numbers, idiot!\n", &threads);
-
+  
+  /*
   if (threads > number_of_processors) {
     printf(
         "The max numbers of processors in system (%ld) is letter then your "
@@ -41,6 +42,7 @@ int main(int argc, char **argv) {
         number_of_processors);
     threads = number_of_processors;
   }
+  */
   threadsNumber = threads;
   columnSize = column;
   rowsNumber = row;
