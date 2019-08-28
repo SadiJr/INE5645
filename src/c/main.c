@@ -26,15 +26,6 @@ int main(int argc, char** argv)
 {
     long number_of_processors = sysconf(_SC_NPROCESSORS_ONLN);
 
-    struct stat st = { 0 };
-
-    // if (stat("../logs", &st) == -1) {
-    //     mkdir("../logs", 0700);
-    // }
-
-    // FILE *file = fopen(FILE_NAME, "ab+");
-    // log_set_fp(file);
-
     int row, column, threads;
     treatInput("Expected numbers of rows: ", "Please type only numbers, idiot!\n", &row);
     treatInput("Expected size of columns: ", "Please type only numbers, idiot!\n", &column);
