@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
     arr[i] = (int *)malloc(sizeof(int) * column);
     arr2[i] = (int *)malloc(sizeof(int) * column);
   }
-  printf("\nCreating matriz with random numbers...\n");
+  printf("\nCreating matrix with random numbers...\n");
   int i, j;
   for (i = 0; i < row; i++) {
     for (j = 0; j < column; j++) {
@@ -123,7 +123,7 @@ void createThreads(int threadsNumber, int bubble) {
   clock_t end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf(
-      "\nFinish algorithm. Total time to proccess array is %f seconds and the "
+      "\nFinished algorithm. Total time to proccess array is %f seconds and the "
       "result is:\n\n",
       total);
   printArray();

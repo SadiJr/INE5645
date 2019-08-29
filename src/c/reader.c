@@ -81,7 +81,7 @@ int main() {
   read_controll();
 
   while (ctrl->populated == 0) {
-    printf("Waiting another program write data in matriz...\n");
+    printf("Waiting another program write data in matrix...\n");
     fflush(stdin);
     sleep(1);
   }
@@ -119,7 +119,7 @@ void bubble_sort_sub_process() {
   end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
   // FIXME Change messages!
-  printf("\n\n\nFinish Bubble Sort algorithm. Total time to proccess array is %f seconds "
+  printf("\n\n\nFinished Bubble Sort algorithm. Total time to proccess array is %f seconds "
          "and the result is:\n\n\n",
          total);
 
@@ -272,7 +272,7 @@ void merge_sort_sub_process() {
     } else if (pid == 0) {
       // printf("\n\nI am the child!\tMy process id: %d\n", getpid());
       init_merge();
-      // printf("Finish child %d\n", getpid());
+      // printf("Finishing child %d\n", getpid());
       exit(0);
     }
   }
@@ -281,7 +281,7 @@ void merge_sort_sub_process() {
 
   end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
-  printf("\n\n\nFinish Merge Sort algorithm. Total time to proccess array is %f "
+  printf("\n\n\nFinished Merge Sort algorithm. Total time to proccess array is %f "
          "seconds\n\n\n",
          total);
 }

@@ -50,7 +50,7 @@ void finish_shared_memory() {
 
 void create_random_matrix() {
   srand(time(NULL));
-  printf("Creating matriz with random numbers...\nCreated matrix is:\n");
+  printf("Creating matrix with random numbers...\nCreated matrix is:\n");
 
   int i;
   for (i = 0; i < row * column; i++) {
