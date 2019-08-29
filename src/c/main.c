@@ -23,7 +23,7 @@ int rowsNumber;
 int threadsNumber;
 
 int main(int argc, char **argv) {
-  long number_of_processors = sysconf(_SC_NPROCESSORS_ONLN);
+  // long number_of_processors = sysconf(_SC_NPROCESSORS_ONLN);
 
   int row, column, threads;
   treatInput("Expected numbers of rows: ", "Please type only numbers, idiot!\n",
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
     arr[i] = (int *)malloc(sizeof(int) * column);
     arr2[i] = (int *)malloc(sizeof(int) * column);
   }
-  printf("Creating matriz with random numbers\n");
+  printf("\nCreating matriz with random numbers...\n");
   int i, j;
   for (i = 0; i < row; i++) {
     for (j = 0; j < column; j++) {
@@ -64,26 +64,22 @@ int main(int argc, char **argv) {
       arr2[i][j] = random;
     }
   }
-  printf("The generated array is:\n\n");
+  printf("The generated matrix is:\n\n");
   printArray();
-  printf("\n\n");
 
-  printf("Bubble Sort Algorithm: ");
+  printf("\nExecuting Bubble Sort Algorithm...");
   createThreads(threads, TRUE);
 
-  printf("\n\n");
-  printf("Restore original array...");
+  printf("\nRestoring original matrix... Restored matrix is:\n\n");
+  free(arr);
   arr = arr2;
-  printf("Restored array is:\n\n");
   printArray();
-  printf("\n\n");
 
-  printf("Merge Sort Algorithm: ");
+  printf("\nExecuting Merge Sort Algorithm...");
   createThreads(threads, FALSE);
 
   free(arr);
-  pthread_exit(NULL);
-
+  printf("\nFinished program. Thanks a lot!");
   return TRUE;
 }
 
@@ -108,7 +104,7 @@ void createThreads(int threadsNumber, int bubble) {
 
   start = clock();
   for (int i = 0; i < threadsNumber; i++) {
-    printf("Creating thread %i\n", i);
+    // printf("Creating thread %i\n", i);
     if (bubble) {
       pthread_create(&threads[i], NULL, bubble_sort, (void *)(intptr_t)i);
     } else {
@@ -128,7 +124,7 @@ void createThreads(int threadsNumber, int bubble) {
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
   printf(
       "\nFinish algorithm. Total time to proccess array is %f seconds and the "
-      "result is:\n\n\n",
+      "result is:\n\n",
       total);
   printArray();
 }
@@ -143,7 +139,7 @@ void *bubble_sort(void *args) {
       continue;
     }
 
-    printf("\nPthread %lu processing row number %i", pthread_self(), row);
+    // printf("\nPthread %lu processing row number %i", pthread_self(), row);
     for (int i = 0; i < columnSize; i++) {
       for (int j = 0; j < columnSize - 1; j++) {
         if (arr[row][j] > arr[row][j + 1]) {
@@ -244,7 +240,7 @@ void *init_merge_sort(void *args) {
       continue;
     }
 
-    printf("\nPthread %lu processing row number %i", pthread_self(), row);
+    // printf("\nPthread %lu processing row number %i", pthread_self(), row);
     mergeSort(row, 0, arr_size - 1);
     row += threadsNumber;
   }

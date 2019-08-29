@@ -48,12 +48,12 @@ void read_matrix() {
     perror("shmat  in matrix");
     _exit(1);
   }
-  printf("\nMatrix Memory attached at %X\n", (int)shared_memory_matrix);
+  // printf("\nMatrix Memory attached at %X\n", (int)shared_memory_matrix);
 
   matrix = (int *)shared_memory_matrix;
 
   if (matrix[0] == NULL) {
-    printf("CUZÃO GOSTOSO DO CARALHO\n");
+    printf("Error! The matrix in shared memory is empty\n");
     return;
   }
 }
@@ -71,7 +71,7 @@ void read_controll() {
     perror("shmat in controll");
     _exit(1);
   }
-  printf("\nControll Memory attached at %X\n", (int)shared_memory_controll);
+  printf("Controll Memory attached at %X", (int)shared_memory_controll);
 
   ctrl = (struct controll *)shared_memory_controll;
   print_details(ctrl);
@@ -97,7 +97,7 @@ int main() {
 }
 
 void bubble_sort_sub_process() {
-  treatInput("Expected number of processors: ", ERROR_MESSAGE, &processors);
+  treatInput("\nExpected number of processors: ", ERROR_MESSAGE, &processors);
   pid_t pid, wpid;
   int i, status = 0;
 
@@ -108,18 +108,18 @@ void bubble_sort_sub_process() {
       printf("Error in creation of process");
       exit(EXIT_FAILURE);
     } else if (pid == 0) {
-      printf("\n\nI am the child!\tMy process id: %d\n", getpid());
+      // printf("\n\nI am the child!\tMy process id: %d\n", getpid());
       bubble();
-      printf("Finish child %d\n", getpid());
+      // printf("Finish child %d\n", getpid());
       exit(0);
     }
   }
-  while ((wpid = wait(&status)) == 0)
-    ;
+  while ((wpid = wait(&status)) == 0);
 
   end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
-  printf("\n\n\nFinish algorithm. Total time to proccess array is %f seconds "
+  // FIXME Change messages!
+  printf("\n\n\nFinish Bubble Sort algorithm. Total time to proccess array is %f seconds "
          "and the result is:\n\n\n",
          total);
 
@@ -146,7 +146,7 @@ void bubble() {
   while (running) {
     pthread_mutex_lock(&ctrl->mutex);
     int r = ctrl->row;
-    printf("\nCurrent process %d working in row  %d\n", getpid(), r);
+    // printf("\nCurrent process %d working in row  %d\n", getpid(), r);
     ctrl->row++;
     pthread_mutex_unlock(&ctrl->mutex);
 
@@ -165,7 +165,7 @@ void bubble() {
       }
     }
     pthread_mutex_lock(&ctrl->mutex);
-    print_array(matrix, ctrl->rowSize, ctrl->columnSize);
+    // print_array(matrix, ctrl->rowSize, ctrl->columnSize);
     pthread_mutex_unlock(&ctrl->mutex);
   }
 }
@@ -182,7 +182,7 @@ void init_merge() {
   while (running) {
     pthread_mutex_lock(&ctrl->mutex);
     int r = ctrl->row;
-    printf("\nCurrent process %d working in row %d\n", getpid(), r);
+    // printf("\nCurrent process %d working in row %d\n", getpid(), r);
     ctrl->row++;
     pthread_mutex_unlock(&ctrl->mutex);
 
@@ -194,7 +194,7 @@ void init_merge() {
     merge_sort(r * ctrl->columnSize,
                r * ctrl->columnSize + ctrl->columnSize - 1);
     pthread_mutex_lock(&ctrl->mutex);
-    print_array(matrix, ctrl->rowSize, ctrl->columnSize);
+    // print_array(matrix, ctrl->rowSize, ctrl->columnSize);
     pthread_mutex_unlock(&ctrl->mutex);
   }
 }
@@ -270,9 +270,9 @@ void merge_sort_sub_process() {
       printf("Error in creation of process");
       exit(EXIT_FAILURE);
     } else if (pid == 0) {
-      printf("\n\nI am the child!\tMy process id: %d\n", getpid());
+      // printf("\n\nI am the child!\tMy process id: %d\n", getpid());
       init_merge();
-      printf("Finish child %d\n", getpid());
+      // printf("Finish child %d\n", getpid());
       exit(0);
     }
   }
@@ -281,7 +281,7 @@ void merge_sort_sub_process() {
 
   end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
-  printf("\n\n\nFinish algorithm. Total time to proccess array is %f "
+  printf("\n\n\nFinish Merge Sort algorithm. Total time to proccess array is %f "
          "seconds\n\n\n",
          total);
 }
