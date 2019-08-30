@@ -50,7 +50,7 @@ void finish_shared_memory() {
 
 void create_random_matrix() {
   srand(time(NULL));
-  printf("Creating matrix with random numbers...\nCreated matrix is:\n");
+  printf("Creating matrix with random numbers...\nCreated matrix is:\n\n");
 
   int i;
   for (i = 0; i < row * column; i++) {
@@ -127,14 +127,14 @@ int main() {
 
   while (ctlr->finished == 0) {
     if (ctlr->populated == 0) {
-      printf("\nOrdened matrix is:\n");
+      printf("\nOrdened matrix is:\n\n");
       print_array(matrix, ctlr->rowSize, ctlr->columnSize);
       printf("\nRestoring original matrix...\n");
       int i;
       for (i = 0; i < ctlr->rowSize * ctlr->columnSize; i++) {
         matrix[i] = temp[i];
       }
-      printf("Restored matrix is:\n");
+      printf("Restored matrix is:\n\n");
       print_array(matrix, ctlr->rowSize, ctlr->columnSize);
       ctlr->row = 0;
       ctlr->populated = 1;
@@ -142,7 +142,7 @@ int main() {
     sleep(1);
   }
 
-  printf("\n\nOrdened matrix is:\n");
+  printf("\n\nOrdened matrix is:\n\n");
   print_array(matrix, ctlr->rowSize, ctlr->columnSize);
   print_details(ctlr);
   printf("\nFinishing shared memory...\n");

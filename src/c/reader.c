@@ -111,16 +111,14 @@ void bubble_sort_sub_process() {
       // printf("\n\nI am the child!\tMy process id: %d\n", getpid());
       bubble();
       // printf("Finish child %d\n", getpid());
-      exit(0);
+      exit(1);
     }
   }
-  while ((wpid = wait(&status)) == 0);
+  while ((wpid = wait(&status)) > 0);
 
   end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
-  // FIXME Change messages!
-  printf("\n\n\nFinished Bubble Sort algorithm. Total time to proccess array is %f seconds "
-         "and the result is:\n\n\n",
+  printf("\nFinished Bubble Sort algorithm. Total time to proccess array is %f seconds.\n",
          total);
 
   ctrl->populated = 0;
@@ -175,7 +173,6 @@ void bubble() {
     Resumming, no overloading. :(
 */
 void init_merge() {
-
   read_matrix();
   int running = 1;
 
@@ -276,12 +273,11 @@ void merge_sort_sub_process() {
       exit(0);
     }
   }
-  while ((wpid = wait(&status)) == 0)
-    ;
+  while ((wpid = wait(&status)) > 0);
 
   end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
-  printf("\n\n\nFinished Merge Sort algorithm. Total time to proccess array is %f "
-         "seconds\n\n\n",
+  printf("\nFinished Merge Sort algorithm. Total time to proccess array is %f "
+         "seconds\n",
          total);
 }
