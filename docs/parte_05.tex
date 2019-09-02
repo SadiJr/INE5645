@@ -13,12 +13,12 @@
 	\subsection{\normalsize CONCLUSÕES A RESPEITO DO ALGORITMO \textit{BUBBLE SORT}}
 		O algoritmo apresenta um desempenho inferior ao \textit{Merge Sort} e, conforme o tamanho da matriz aumenta, o desempenho do algoritmo diminuí (considerando o mesmo número de \textit{threads}). 
 		
-		Agora, com relação a linguagem, ao manter o mesmo tamanho de matriz e o mesmo número de \textit{threads} em ambas as aplicações, notou-se um claro desempenho superior da linguagem C em relação à linguagem Java. Como, por exemplo, em uma matriz 100x100 e com 10 \textit{threads} executando, em C a ordenação da matriz levou 0.008282 segundos, enquanto em Java a mesma ordenação levou 0.02561 segundos. 
+		Agora, com relação a linguagem, ao manter o mesmo tamanho de matriz e o mesmo número de \textit{threads} em ambas as aplicações, notou-se um claro desempenho superior da linguagem C em relação à linguagem Java. Como, por exemplo, em uma matriz 100x100 e com 10 \textit{threads} executando, em C a ordenação da matriz levou 0.018756 segundos, enquanto em Java a mesma ordenação levou 0.047326123 segundos. 
 		
 		Para maiores detalhes e mais casos de exemplo, favor ver os \textit{logs} de cada aplicação.
 		
 	\subsection{\normalsize CONCLUSÕES A RESPEITO DO ALGORITMO \textit{MERGE SORT}}
-		O algoritmo apresenta um desempenho muito bom, mesmo com matrizes enormes e poucas \textit{threads}. Novamente a superioridade de desempenho da linguagem C sobre a linguagem Java se faz presente. Tomando como exemplo o caso relatado acima, enquanto a ordenação em C levou 0.001642 segundos, a ordenação em Java levou 0.008325 segundos, o que, apesar de parecer ser pouco, é uma diferença colossal de desempenho.
+		O algoritmo apresenta um desempenho muito bom, mesmo com matrizes enormes e poucas \textit{threads}. Novamente a superioridade de desempenho da linguagem C sobre a linguagem Java se faz presente. Tomando como exemplo o caso relatado acima, enquanto a ordenação em C levou 0.003700 segundos, a ordenação em Java levou 0.010905595 segundos, o que, apesar de parecer ser pouco, é uma diferença colossal de desempenho.
 		
 	\subsection{\normalsize DEMAIS CONSIDERAÇÕES}
 		Como era de se esperar, quanto maior o tamanho da matriz, mais tempo se leva para ordena-lá. Além disso, percebeu-se que não vale a pena criar mais \textit{threads} do que o limite físico de núcleos da máquina, uma vez que o ganho de desempenho ao fazer isso, quando existe, não é muito significante, além, é claro, de poder ter o efeito oposto e acabar diminuindo o desempenho da aplicação.
