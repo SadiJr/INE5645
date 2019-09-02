@@ -1,1 +1,28 @@
 \section{\normalsize CONCLUSÕES}
+	
+	\subsection{\normalsize CONCLUSÕES A RESPEITO DA LINGUAGEM \textit{C}}
+		Com relação à \textit{threads}, o limite máximo de \textit{threads} possíveis de serem executadas sem erro, na máquina anteriormente detalhada, é de 30.000 \textit{threads}. É possível executar com até 33.010 \textit{threads}, porém, se esse valor for utilizado, apesar de nenhum erro ocorrer, a aplicação não consegue finalizar, ficando ``congelada''.
+		
+		Agora com relação aos processos, o limite máximo de processos possíveis de serem executados sem erro é de 10.330 processos.
+		
+		Finalmente, de forma geral e esperada, os algoritmos de ordenação executados em C apresentaram uma velocidade maior na ordenação das matrizes em comparação com os algoritmos executados em Java, tendo em mente que as matrizes usadas por ambas as linguagens possuíam o mesmo tamanho, embora não necessariamente possuíssem os mesmos dados.
+		 
+	\subsection{\normalsize CONCLUSÕES A RESPEITO DA LINGUAGEM \textit{Java}}
+		Em Java, o limite máximo de \textit{threads} se mostrou superior em comparação à linguagem C, onde foi possível, embora com enorme perda de desempenho, executar 1.000.000 \textit{threads}, tendo em mente que também se mostrou possível executar um número maior de \textit{threads}, o que me leva a concluir que não existem limites para o número máximo de \textit{threads} em Java, ou que, pelo menos, esse limite é extremamente alto.
+	
+	\subsection{\normalsize CONCLUSÕES A RESPEITO DO ALGORITMO \textit{BUBBLE SORT}}
+		O algoritmo apresenta um desempenho inferior ao \textit{Merge Sort} e, conforme o tamanho da matriz aumenta, o desempenho do algoritmo diminuí (considerando o mesmo número de \textit{threads}). 
+		
+		Agora, com relação a linguagem, ao manter o mesmo tamanho de matriz e o mesmo número de \textit{threads} em ambas as aplicações, notou-se um claro desempenho superior da linguagem C em relação à linguagem Java. Como, por exemplo, em uma matriz 100x100 e com 10 \textit{threads} executando, em C a ordenação da matriz levou 0.008282 segundos, enquanto em Java a mesma ordenação levou 0.02561 segundos. 
+		
+		Para maiores detalhes e mais casos de exemplo, favor ver os \textit{logs} de cada aplicação.
+		
+	\subsection{\normalsize CONCLUSÕES A RESPEITO DO ALGORITMO \textit{MERGE SORT}}
+		O algoritmo apresenta um desempenho muito bom, mesmo com matrizes enormes e poucas \textit{threads}. Novamente a superioridade de desempenho da linguagem C sobre a linguagem Java se faz presente. Tomando como exemplo o caso relatado acima, enquanto a ordenação em C levou 0.001642 segundos, a ordenação em Java levou 0.008325 segundos, o que, apesar de parecer ser pouco, é uma diferença colossal de desempenho.
+		
+	\subsection{\normalsize DEMAIS CONSIDERAÇÕES}
+		Como era de se esperar, quanto maior o tamanho da matriz, mais tempo se leva para ordena-lá. Além disso, percebeu-se que não vale a pena criar mais \textit{threads} do que o limite físico de núcleos da máquina, uma vez que o ganho de desempenho ao fazer isso, quando existe, não é muito significante, além, é claro, de poder ter o efeito oposto e acabar diminuindo o desempenho da aplicação.
+		
+		Finalmente, pode-se perceber que o desempenho da aplicação aumenta se a matriz tiver poucos linhas, independente do tamanho das colunas, em detrimento a uma matriz com muitas linhas mas colunas pequenas.
+		
+		Por fim, mas não menos importante, vale ressaltar que, caso reste alguma dúvida com relação ao desempenho das aplicações, basta ler os \textit{logs} anexados e, caso isso não seja suficiente, basta executar as aplicações anexadas você mesmo e fazer seus próprios testes e tirar suas próprias conclusões.

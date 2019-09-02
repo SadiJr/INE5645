@@ -76,7 +76,7 @@ public class Main {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				arr[i][j] = (int) (Math.random() * 1000);
+				arr[i][j] = (int) (Math.random() * 1000 + 1);
 			}
 		}
 		return arr;

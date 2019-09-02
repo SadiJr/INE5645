@@ -18,6 +18,8 @@
 \usepackage{float}
 \usepackage{breakurl}
 \usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
 
 \begin{document}
 
@@ -33,7 +35,7 @@
 {\bf  UNIVERSIDADE FEDERAL DE SANTA CATARINA}\\[0.2cm]
 {\bf CENTRO TECNOLÓGICO}\\[0.2cm]
 {\bf  DEPARTAMENTO DE INFORMÁTICA E ESTATÍSTICA}\\[5.5cm]
-{\bf \large RELATÓRIO DE QUALIDADE DE \textit{SOFTWARE}}\\[3.6 cm]
+{\bf \large RELATÓRIO DE ANÁLISE DE DESEMPENHO USANDO PARALELISMO}\\[3.6 cm]
 {Sadi Júnior Domingos Jacinto}\\[1cm]
 {Professor orientador: Odorico Machado Mendizabal}\\[4.1 cm]
 {Florianópolis}\\[0.2cm]
@@ -64,6 +66,17 @@
 \begin{center}
 \tableofcontents
 \end{center}
+
+%\definecolor{blue(pigment)}{RGB}{85, 85, 255}
+
+\lstdefinestyle{base}{
+  language=bash,
+  emptylines=1,
+  breaklines=true,
+  basicstyle=\ttfamily\color{black},
+  moredelim=**[is][\color{red}]{@}{@},
+  moredelim=**[is][\color{black}]{!!}{!!}
+}
 	
 \include{parte_01}
 \include{parte_02}

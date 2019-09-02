@@ -1,21 +1,21 @@
 \section{\normalsize ALGORITMOS}
 	Os algoritmos de ordenação usados neste trabalho foram:
 	
-	\subsection{\normalsize BUBBLE SORT}
+	\subsection{\normalsize \textit{BUBBLE SORT}}
 		O Bubble Sort é um algoritmo simples que é usado para ordenar um dado conjunto de \textit{n} elementos fornecidos na forma de um \textit{array} com \textit{n} número de elementos. O Bubble Sort compara todos os elementos, um por um, e classifica-os com base em seus valores.
 
 		Se a matriz determinada tiver que ser classificada em ordem crescente, então a ordenação em bolha começará comparando o primeiro elemento da matriz com o segundo, se o primeiro elemento for maior que o segundo, ele trocará os elementos e, em seguida, siga em frente para comparar o segundo e o terceiro elemento, e assim por diante.
 
 		Se tivermos \textit{n} elementos totais, precisamos repetir esse processo por \textit{n-1} vezes.
 
-		É conhecido como Bubble sort, porque a cada iteração completa é o maior elemento na matriz dada, borbulha em direção ao último lugar ou ao índice mais alto, assim como uma bolha d'água sobe até a superfície da água.
+		É conhecido como Bubble sort, porque a cada iteração completa o maior elemento na matriz dada borbulha em direção ao último lugar ou ao índice mais alto, assim como uma bolha d'água sobe até a superfície da água.
 
 		A classificação ocorre percorrendo todos os elementos um por um e comparando-o com o elemento adjacente e trocando-os, se necessário.
 
 		No melhor caso, o algoritmo executa \textit{n} operações relevantes, onde \textit{n} representa o número de elementos do vetor. No pior caso, são feitas \textit{n}$^{2}$ operações. A complexidade desse algoritmo é de ordem quadrática. Por isso, ele não é recomendado para programas que precisem de velocidade e operem com quantidade elevada de dados.
 	
-	\subsection{\normalsize MERGE SORT}
-		A ideia básica do Merge Sort é criar uma sequência ordenada a partir de duas outras também ordenadas. Para isso, o algoritmo Merge Sort divide a sequência original em pares de dados, agrupa estes pares na ordem desejada; depois as agrupa as sequências de pares já ordenados, formando uma nova sequência ordenada de quatro elementos, e assim por diante, até ter toda a sequência ordenada.\\
+	\subsection{\normalsize \textit{MERGE SORT}}
+		A ideia básica do Merge Sort é criar uma sequência ordenada a partir de duas outras também ordenadas. Para isso, o algoritmo Merge Sort divide a sequência original em pares de dados, ordena estes pares na ordem desejada, depois reagrupa as sequências de pares já ordenados, formando uma nova sequência ordenada dos elementos, repetindo esse processa até ter toda a sequência ordenada.\\
 		O algoritmo segue três passos comuns aos algoritmos dividir-para-conquistar:
 		
 		\begin{enumerate}
@@ -23,12 +23,12 @@
 				Dividir os dados em subsequências pequenas. Este passo é realizado recursivamente, iniciando com a divisão do vetor de \textit{n} elementos em duas metades, cada uma das metades é novamente dividida em duas novas metades e assim por diante, até que não seja mais possível a divisão (ou seja, sobrem \textit{n} vetores com um elemento cada).
 				
 			\item Conquistar:\\
-				Classificar as duas metades recursivamente aplicando o algoritmo do Merge Sort;
+				Classificar as duas metades recursivamente aplicando o algoritmo do \textit{Merge Sort}.
 			
 			\item Combinar:\\
-				Juntar as duas metades em um único conjunto já classificado. Para completar a ordenação do vetor original de \textit{n} elementos, faz-se o Merge ou a fusão dos sub-vetores já ordenados.
+				Juntar as duas metades em um único conjunto já classificado. Para completar a ordenação do vetor original de \textit{n} elementos, faz-se o \textit{merge} ou a fusão dos sub-vetores já ordenados.
 		\end{enumerate}
 		
-		A desvantagem do Merge Sort é que requer o dobro de memória, ou seja, precisa de um vetor com as mesmas dimensões do vetor que está sendo classificado.
+		A desvantagem do \textit{Merge Sort} é que requer o dobro de memória, ou seja, precisa de um vetor com as mesmas dimensões do vetor que está sendo classificado.
 		
-		A vantagem (ou desvantagem, dependendo do observador), é que a complexidade do Merge Sort (O(n log n)) é a mesma para o melhor, médio e pior caso, uma vez que, independente da situação dos dados no vetor, o algoritmo irá sempre dividir e intercalar os dados.
+		A vantagem (ou desvantagem, dependendo do observador), é que a complexidade do \textit{Merge Sort} (\textit{O}(\textit{n log n})) é a mesma para o melhor, médio e pior caso, uma vez que, independente da situação dos dados no vetor, o algoritmo irá sempre dividir e intercalar os dados.

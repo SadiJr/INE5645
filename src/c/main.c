@@ -26,11 +26,11 @@ int main(int argc, char **argv) {
   // long number_of_processors = sysconf(_SC_NPROCESSORS_ONLN);
 
   int row, column, threads;
-  treatInput("Expected numbers of rows: ", "Please type only numbers, idiot!\n",
+  treatInput("\nExpected numbers of rows: ", "Please type only numbers, idiot!\n",
              &row);
-  treatInput("Expected size of columns: ", "Please type only numbers, idiot!\n",
+  treatInput("\nExpected size of columns: ", "Please type only numbers, idiot!\n",
              &column);
-  treatInput("Expected number of threads: ",
+  treatInput("\nExpected number of threads: ",
              "Please type only numbers, idiot!\n", &threads);
   
   /*
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
   int i, j;
   for (i = 0; i < row; i++) {
     for (j = 0; j < column; j++) {
-      int random = rand() % 1000;
+      int random = rand() % 1000 + 1;
       arr[i][j] = random;
       arr2[i][j] = random;
     }
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
   createThreads(threads, FALSE);
 
   free(arr);
-  printf("\nFinished program. Thanks a lot!");
+  printf("\nFinished program. Thanks a lot!\n\n");
   return TRUE;
 }
 
@@ -87,8 +87,12 @@ void treatInput(char *inputMessage, char *errorMessage, int *parameter) {
   int expectedInput = FALSE;
   do {
     printf(inputMessage);
+    //comment out lines 91, 94 and 95 if you are going to run the application without logging.
+    fflush(stdout);
     if (scanf("%d", parameter) == 1) {
       expectedInput = TRUE;
+      printf("%d", *parameter);
+      fflush(stdout);
     } else {
       printf(errorMessage);
       fgetc(stdin);

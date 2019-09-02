@@ -33,8 +33,12 @@ void treatInput(char *inputMessage, char *errorMessage, int *parameter) {
   int expectedInput = 0;
   do {
     printf(inputMessage);
+    //Comment out lines 37, 41 and 42 if you are going to run the application without logging
+    fflush(stdout);
     if (scanf("%d", parameter) == 1) {
       expectedInput = 1;
+      printf("%d", *parameter);
+      fflush(stdout);
     } else {
       printf(errorMessage);
       fgetc(stdin);

@@ -111,16 +111,17 @@ void bubble_sort_sub_process() {
       // printf("\n\nI am the child!\tMy process id: %d\n", getpid());
       bubble();
       // printf("Finish child %d\n", getpid());
-      exit(1);
+      exit(0);
     }
   }
   while ((wpid = wait(&status)) > 0);
 
   end = clock();
   total = ((double)(end - start)) / CLOCKS_PER_SEC;
-  printf("\nFinished Bubble Sort algorithm. Total time to proccess array is %f seconds.\n",
+  printf("\n\nFinished Bubble Sort algorithm. Total time to proccess array is %f seconds.\n",
          total);
-
+  fflush(stdout);
+  
   ctrl->populated = 0;
 }
 

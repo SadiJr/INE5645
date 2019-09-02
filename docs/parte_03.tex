@@ -1,5 +1,17 @@
 \section{\normalsize AMBIENTE DE TESTE}
 	Os testes de desempenho foram executados em um computador com as seguintes configurações:
-	
-	
-	Além disso, foram adicionados \textit{logs} dos testes que se encontram no arquivo anexado junto com este relatório.
+	\begin{lstlisting}[frame=single,style=base]
+@CPU:@
+  @Topology:@ !!Quad Core!! @model:@ !!Intel Core i5-8250U!! @bits:@ !!64!! 
+  @type:@ !!MT MCP!! @L2 cache:@ !!6144 KiB!! 
+  @Speed:@ !!700 MHz!! @min/max:@ !!400/3400 MHz!! @Core speeds (MHz): 
+  1:@ !!800!! @2:@ !!800!! @3:@ !!800!! @4:@ !!800!! @5:@ !!800!! @6:@ !!800!! @7:@ !!800!! @8:@ !!800!! 
+@Graphics:@
+  @Device-1:@ !!Intel UHD Graphics 620!! @driver:@ !!i915!! @v:@ !!kernel!! 
+  @Device-2:@ !!NVIDIA GP108M [GeForce MX150]!! @driver:@ !!nvidia!! 
+  @v:@ !!430.40!!
+  @OpenGL: renderer:@ !!GeForce MX150/PCIe/SSE2!! 
+  @v:@ !!4.6.0 NVIDIA 430.40!! 
+    \end{lstlisting}
+
+	Além disso, foram adicionados \textit{logs} dos testes que se encontram no arquivo anexado junto com este relatório. É importante frisar que tais \textit{logs} não foram colocados em partes críticas do código, de forma a não atrapalhar em nada o desempenho da aplicação.

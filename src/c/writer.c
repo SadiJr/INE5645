@@ -54,7 +54,7 @@ void create_random_matrix() {
 
   int i;
   for (i = 0; i < row * column; i++) {
-    int random = rand() % 1000;
+    int random = rand() % 1000 + 1;
     matrix[i] = random;
     temp[i] = random;
   }
@@ -67,7 +67,7 @@ void create_matrix() {
   shared_memory_matrix = (void *)0;
 
   treatInput("\nExpected number of rows: ", ERROR_MESSAGE, &row);
-  treatInput("Expected number of columns: ", ERROR_MESSAGE, &column);
+  treatInput("\nExpected number of columns: ", ERROR_MESSAGE, &column);
   ctlr->rowSize = row;
   ctlr->columnSize = column;
 
@@ -147,6 +147,6 @@ int main() {
   print_details(ctlr);
   printf("\nFinishing shared memory...\n");
   finish_shared_memory();
-  printf("Process finished. Thanks a lot!");
+  printf("Process finished. Thanks a lot!\n\n");
   return 0;
 }

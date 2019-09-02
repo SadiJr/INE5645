@@ -1,2 +1,44 @@
 \section{\normalsize METODOLOGIA}
-	Para tornar o processo paralelo possível, ambas as aplicações (em C e em Java), utilizam o \textit{input} do usuário para definir o número de linhas e colunas 
+	Para facilitar os testes e tornar o processo mais dinâmico possível, ambas as aplicações (em C e em Java), utilizam o \textit{input} do usuário para definir o número de linhas, colunas, \textit{threads} e processos.
+	
+	Após o \textit{input} do usuário com tais informações, é criado uma matriz \textit{NxM}, onde \textit{n} é a quantidade de linhas e \textit{m} é a quantidade de colunas requisitadas pelo usuário, com valores aleatórios limitados ao intervalo de 0 à 1000, usando as bibliotecas \textit{rand()}, em C, e \textit{Math.random()}, em Java.
+	
+	\subsection{\normalsize \textit{THREADS}}
+	
+	No processamento usando \textit{threads}, cada \textit{thread} é criada recebendo um parâmetro inteiro, que corresponde à linha da matriz que essa \textit{thread} irá ordenar. Para saber qual a próxima linha a ser ordenada, a \textit{thread} acrescenta ao seu parâmetro inicial o número total de \textit{threads}, número esse definido pelo usuário no início da aplicação e que é armazenado em uma variável global. É importante frisar que, assim como o número total de \textit{threads} que irão executar, também é armazenado em uma variável global o número total de linhas da matriz, dessa forma, toda vez que uma \textit{thread} vai ordenar uma linha, ela primeiramente verifica se tal linha existe na matriz, caso exista a \textit{thread} segue seu fluxo normal (ordenar a linha, calcular qual a próxima linha a ser ordenada, repetir), do contrário a \textit{thread} é encerrada. Ao usar essa estratégia, pode-se descartar o uso de variáveis de controle (\textit{mutex} e \textit{synchronized}).
+	
+	\subsection{\normalsize PROCESSOS}
+	Já no processamento usando processos, existem dois processos principais:
+		\begin{itemize}
+			\item \textbf{writer.c}:\\
+				Responsável por criar e escrever os dados na memória compartilhada. Também é responsável pelo \textit{output} do resultado da ordenação e por excluir, ao final do processamento, a área de memória compartilhada.
+			
+			\item \textbf{reader.c}:\\
+				Responsável por ler os dados da memória compartilhada e realizar a ordenação da matriz.
+		\end{itemize}
+		
+	É importante esclarecer que foram criadas duas áreas de memória compartilhadas
+		\begin{itemize}
+			\item Uma que armazena as variáveis de controle:
+				\begin{itemize}
+					\item Número de linhas (int);
+					\item Número de colunas (int);
+					\item Verificação se a matriz já foi preenchida (int);
+					\item Próxima linha a ser ordenada (int, inicialmente 0);
+					\item Verificação se o processamento já acabou (int) e
+					\item \textit{Mutex}
+				\end{itemize}
+			\item E outra que armazena a matriz.
+		\end{itemize}		
+	
+	Através da leitura das variáveis de controle, o ``leitor'' pode definir qual o tamanho exato da memória compartilhada usada pela matriz (novamente ressaltando que o tamanho da matriz é dinâmico, uma vez que se baseia nos \textit{inputs} do usuário) e se a matriz já está populada (se não, o ``leitor'' entra em \textit{loop} até que a matriz seja preenchida).
+	
+	Através da variável que armazena a próxima linha a ser ordenada, os subprocessos conseguem saber qual linha da matriz que eles devem ordenar. E, graças ao \textit{mutex}, nenhum processo tenta ordenar uma linha que já pertence à outro processo (ou que já tenha sido ordenada). Isso ocorre devido ao fato de, após conseguir o \textit{mutex}, o processo adquire o número da linha que o mesmo irá ordenar e, antes de liberar o \textit{mutex}, incrementa o valor da variável na memória compartilhada. Nessa aplicação também existe a verificação para que o processo não extrapole os limites da matriz.
+	
+	\subsection{\normalsize A MATRIZ}
+		O tamanho máximo de linhas e colunas para que o algoritmo funcione sem erro é de 25.000 linhas por 25.000 colunas. Excedido este tamanho, a aplicação sempre acaba sendo morta.
+	
+	\subsection{\normalsize DEMAIS CONSIDERAÇÕES}
+		O primeiro algoritmo que é executado é o \textit{Bubble Sort}. Após o término do mesmo, a matriz ordenada é restaurada a seu estado original e o segundo algoritmo (\textit{Merge Sort}) é executado. Essa estratégia foi usada para garantir que o acaso na geração de números aleatórios não favorecesse um algoritmo em detrimento de outro. Fora isso, o tempo de processamento é calculado separadamente para cada algoritmo, não contando no cálculo o tempo para gerar a matriz e restaura-lá. Vale ressaltar que os \textit{outputs} existentes também não afetam o cálculo de desempenho dos algoritmos.
+		
+		Quaisquer dúvidas, favor entrar em contato através do endereço eletrônico \url{sadijacinto@gmail.com}.		
