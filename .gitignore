@@ -1,3 +1,7 @@
+# C binaries
+*
+!*.*
+
 # Prerequisites
 *.d
 
@@ -129,8 +133,8 @@ local.properties
 *.class
 
 # Log file
-#*.log
-#logs/
+*.log
+logs/
 
 # BlueJ files
 *.ctxt
@@ -260,7 +264,6 @@ StyleCopReport.xml
 *.tmp
 *.tmp_proj
 *_wpftmp.csproj
-#*.log
 *.vspscc
 *.vssscc
 .builds
@@ -546,12 +549,4 @@ src/c/exec
 .git/hooks/prepare-commit-msg.sample
 .git/hooks/pre-receive.sample
 .git/hooks/applypatch-msg.sample
-
-
-src/c/writer
-
-src/c/reader
-
 *.json
-
-src/c/main
