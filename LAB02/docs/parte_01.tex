@@ -1,0 +1,23 @@
+\section{\normalsize PROBLEMA DOS LEITORES E ESCRITORES}
+	O problema dos leitores e escritores é um dos problemas clássicos da programação concorrente. 
+	
+	Este problema é uma abstração do acesso à base de dados, onde a leitura dos dados não apresenta perigos, mesmo se feita por vários processos, enquanto a escrita dos dados deve ter um tratamento diferente, onde a exclusão mútua deve ser aplicada para garantir a consistência dos dados.
+	
+	Neste problema, divide-se os processos em duas classes:
+	\begin{itemize}
+		\item Leitores: Processos ou \textit{threads}, os quais acessam mas não alteram a informação. Dessa forma pode-se ter vários leitores utilizando ao mesmo tempo a informação compartilhada, uma vez que nenhum deles realizará alterações na mesma.
+		
+		\item Escritores: Processos ou \textit{threads}, os quais acessam a informação e fazem alterações na mesma, sendo, portanto, requerido o acesso exclusivo em detrimento aos outros processos ou \textit{threads}, sejam eles leitores ou escritores, com o intuito de garantir a consistência do dado.
+	\end{itemize}
+	
+	De forma resumida, o problema se caracteriza quando existem diversos leitores e escritores buscando ler/modificar um dado compartilhado. É necessário então que quando um escritor estiver atualizando o dado, nenhum outro leitor ou escritor possa acessar aquele dado, visto que os leitores podem acabar lendo um dado desatualizado e os escritores podem sobreescrever esse dado.
+	
+	Analisando uma situação de um banco de dados localizado em um servidor, por exemplo, tem-se situações relacionadas ao caso do problema dos leitores e escritores. Supondo que existem usuários ligados a este servidor querendo ler dados em uma tabela chamada Estoque, a princípio todos os usuários terão acesso a esses dados. Supondo agora usuários querendo atualizar na mesma tabela de Estoque, informações de vendas realizadas, de fato esses dados serão atualizados. Mas para organizar esses acessos tanto de atualização quanto de leitura no banco de dados, algumas políticas devem ser seguidas, sendo que o mesmo se aplica ao problema dos leitores e escritores.
+	
+	A solução ideal deve permitir que vários leitores possam acessar o dado ao mesmo tempo, mas quando um escritor esta atualizando o dado nenhum outro processo deve ter acesso.
+		
+	O padrão de exclusão aqui pode ser chamado de exclusão mútua categórica. Um processo leitor na seção crítica não exclui necessariamente outros processos leitores, mas a presença de uma processo escritor na seção crítica exclui outras processos.
+	
+	Este problema pode ser abordado de várias formas. Em uma das abordagens, dá-se preferência ao escritor, ou seja, o escritor, uma vez desejando acesso à memória compartilhada, a obtém, mesmo que processos leitores estivessem esperando antes.
+	
+	Em outra abordagem, dá-se preferência aos leitores, ou seja, o escritor só obtém acesso à memória compartilhada quando um todos os escritores liberam o acesso. Esta situação é perigosa e pode levar a um \textit{starvation} do escritor no caso em que existem vários processos leitores.
