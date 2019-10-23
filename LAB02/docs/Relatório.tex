@@ -12,7 +12,7 @@
 \usepackage{microtype} 			% para melhorias de justificação
 \usepackage[left=3cm,right=2cm,top=3cm,bottom=2cm]{geometry}
 \usepackage{url}
-\usepackage[hidelinks, breaklinks=true]{hyperref}
+
 \usepackage{setspace}
 \usepackage{cite}
 \usepackage{float}
@@ -20,6 +20,10 @@
 \usepackage{verbatim}
 \usepackage{listings}
 \usepackage{xcolor}
+
+\usepackage[hang, flushmargin]{footmisc}
+\usepackage[hidelinks, breaklinks=true]{hyperref}
+\usepackage{footnotebackref}
 
 \definecolor{mGreen}{rgb}{0,0.6,0}
 \definecolor{mGray}{rgb}{0.5,0.5,0.5}
@@ -74,25 +78,25 @@ literate=
 {\bf  UNIVERSIDADE FEDERAL DE SANTA CATARINA}\\[0.2cm]
 {\bf CENTRO TECNOLÓGICO}\\[0.2cm]
 {\bf  DEPARTAMENTO DE INFORMÁTICA E ESTATÍSTICA}\\[5.5cm]
-{\bf \large RELATÓRIO DE ANÁLISE DE MECANISMOS DE SINCRONIZAÇÃO E PROBLEMAS DE CONCORRÊNCIA EM AMBIENTES \textit{MULTITHREADED}}\\[3.6 cm]
+{\bf \large ANÁLISE DO PROBLEMA DOS LEITORES E ESCRITORES}\\[3.6 cm]
 {Sadi Júnior Domingos Jacinto}\\[1cm]
-{Professor orientador: Odorico Machado Mendizabal}\\[4.1 cm]
+{Professor orientador: Odorico Machado Mendizabal}\\[4.9 cm]
 {Florianópolis}\\[0.2cm]
 {2019}
 \newpage
 \thispagestyle{empty}
 {Sadi Júnior Domingos Jacinto}\\[9cm]
-{\bf \large RELATÓRIO DE ANÁLISE DE MECANISMOS DE SINCRONIZAÇÃO E PROBLEMAS DE CONCORRÊNCIA EM AMBIENTES \textit{MULTITHREADED}}\\[0.5cm]
+{\bf \large ANÁLISE DO PROBLEMA DOS LEITORES E ESCRITORES}\\[0.5cm]
     \begin{flushright}
     \begin{list}{}{
       \setlength{\leftmargin}{7.2cm}
       \setlength{\rightmargin}{0cm}
       \setlength{\labelwidth}{0pt}
       \setlength{\labelsep}{\leftmargin}}
-      \item Análise de mecanismos de sincronização e problemas de concorrência em programação paralela em ambientes \textit{multithreaded} requerido pelo professor da disciplina Programação Paralela e Distribuída, Odorico Machado Mendizabal, necessário para obtenção de nota.\\[0.2 cm] 
+      \item Análise de um dos problemas clássicos da programação concorrente, requerido pelo professor da disciplina Programação Paralela e Distribuída, Odorico Machado Mendizabal, necessário para obtenção de nota.\\[0.2 cm] 
       \setlength{\labelsep}{\leftmargin}
       \item Professor orientador: Odorico Machado Mendizabal\
-      \\[7.5cm]
+      \\[9cm]
      \end{list}
 	 \end{flushright}
 {Florianópolis}\\[0.2cm]
