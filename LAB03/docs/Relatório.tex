@@ -1,0 +1,107 @@
+\documentclass[12pt,a4paper,brazil,abntex2]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+%\usepackage{lmodern}			% Usa a fonte Latin Modern			
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage[left=3cm,right=2cm,top=3cm,bottom=2cm]{geometry}
+\usepackage{url}
+
+\usepackage{setspace}
+\usepackage{cite}
+\usepackage{float}
+\usepackage{breakurl}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\usepackage[hang, flushmargin]{footmisc}
+\usepackage[hidelinks, breaklinks=true]{hyperref}
+\usepackage{footnotebackref}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{C}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C
+}
+
+\lstset{
+language=C,   % R code
+literate=
+	{á}{{\'a}}1
+	{à}{{\`a}}1
+	{ã}{{\~a}}1
+	{é}{{\'e}}1
+	{ê}{{\^e}}1
+	{í}{{\'i}}1
+	{ó}{{\'o}}1
+	{õ}{{\~o}}1
+	{ú}{{\'u}}1
+	{ç}{{\c{c}}}1
+}
+
+\begin{document}
+\singlespacing
+\begin{titlepage}
+\begin{center}
+\begin{figure}[!htb]
+\center
+
+\includegraphics[scale=0.25]{/home/sadi/Downloads/Curso/Brasao/Sigla.pdf} 
+
+\end{figure}
+{\bf  UNIVERSIDADE FEDERAL DE SANTA CATARINA}\\[0.2cm]
+{\bf CENTRO TECNOLÓGICO}\\[0.2cm]
+{\bf  DEPARTAMENTO DE INFORMÁTICA E ESTATÍSTICA}\\[5.5cm]
+{\bf \large PROCESSAMENTO DISTRIBUÍDO USANDO MPI}\\[3.6 cm]
+{Sadi Júnior Domingos Jacinto}\\[1cm]
+{Professor orientador: Odorico Machado Mendizabal}\\[4.9 cm]
+{Florianópolis}\\[0.2cm]
+{2019}
+\newpage
+\thispagestyle{empty}
+{Sadi Júnior Domingos Jacinto}\\[9cm]
+{\bf \large PROCESSAMENTO DISTRIBUÍDO USANDO MPI}\\[0.5cm]
+    \begin{flushright}
+    \begin{list}{}{
+      \setlength{\leftmargin}{7.2cm}
+      \setlength{\rightmargin}{0cm}
+      \setlength{\labelwidth}{0pt}
+      \setlength{\labelsep}{\leftmargin}}
+      \item Análise do uso de processamento distribuído utilizando MPI, requerido pelo professor da disciplina Programação Paralela e Distribuída, Odorico Machado Mendizabal, necessário para obtenção de nota.\\[0.2 cm] 
+      \setlength{\labelsep}{\leftmargin}
+      \item Professor orientador: Odorico Machado Mendizabal\
+      \\[9cm]
+     \end{list}
+	 \end{flushright}
+{Florianópolis}\\[0.2cm]
+{2019}
+\end{center}
+\end{titlepage} %término da capa
+
+\end{document}
