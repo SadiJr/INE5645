@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <mpi.h>
 
+double parallel, sequential;
+
 unsigned int get_max(int *array, int size) {
   unsigned int max = array[0];
 
@@ -103,7 +105,8 @@ void parallel_sort(int *parallel_array, int size, int numprocs, MPI_Status statu
 
   end_time = MPI_Wtime();
   // print_array(parallel_array, size);
-  printf("Total time in parallel process: %f seconds\n\n\n", end_time - start_time);
+  parallel = end_time - start_time;
+  printf("Total time in parallel process: %f seconds\n\n\n", parallel);
 }
 
 void sequential_sort(int *sequential_array, int size, int buckets) {
@@ -154,10 +157,10 @@ void sequential_sort(int *sequential_array, int size, int buckets) {
     }
   }
   t = clock() - t;
-  double time = ((double)t) / CLOCKS_PER_SEC;
+  sequential = ((double)t) / CLOCKS_PER_SEC;
     
   // print_array(sequential_array, size);
-  printf("Total time in sequential process: %f seconds\n", time);
+  printf("Total time in sequential process: %f seconds\n", sequential);
 }
 
 int main(int argc, char **argv) {
@@ -214,6 +217,7 @@ int main(int argc, char **argv) {
     printf("Starting sequential process...\n");
     // print_array(sequential_array, size);
     sequential_sort(sequential_array, size, numprocs);
+    printf("Speedup is %f", sequential/parallel);
   } else {
     int size;
     MPI_Status status;
