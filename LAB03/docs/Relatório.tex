@@ -7,7 +7,6 @@
 \usepackage{amssymb}
 \usepackage{makeidx}
 \usepackage{graphicx}
-%\usepackage{lmodern}			% Usa a fonte Latin Modern			
 \usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
 \usepackage{microtype} 			% para melhorias de justificação
 \usepackage[left=3cm,right=2cm,top=3cm,bottom=2cm]{geometry}
@@ -71,9 +70,7 @@ literate=
 \begin{center}
 \begin{figure}[!htb]
 \center
-
 \includegraphics[scale=0.25]{/home/sadi/Downloads/Curso/Brasao/Sigla.pdf} 
-
 \end{figure}
 {\bf  UNIVERSIDADE FEDERAL DE SANTA CATARINA}\\[0.2cm]
 {\bf CENTRO TECNOLÓGICO}\\[0.2cm]
@@ -103,5 +100,14 @@ literate=
 {2019}
 \end{center}
 \end{titlepage} %término da capa
-
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\include{Resumo}
+\include{Definições}
+\include{MPI}
+\include{Bucketsort}
+\include{Implementação}
+\include{Resultados}
+\include{Conclusões}
 \end{document}
