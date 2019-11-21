@@ -1,1 +1,18 @@
 \section{\normalsize SOBRE A IMPLEMENTAÇÃO}
+	Essa sessão será dedicada à explicação da implementação do algoritmo de ordenação paralelo.
+	
+	Primeiramente, através do \textit{input} do usuário\footnote{passado como parâmetro na execução da aplicação}, é definido o tamanho do vetor. Em seguida, após alocar memória para esse vetor, o mesmo é preenchido com números aleatórios. 
+	
+	Aqui é importante frisar que tanto a versão paralela quanto a sequencial possuem os mesmos dados alocados nas mesmas posições de seus respectivos vetores. Isso foi feito para garantir que os resultados finais entre a versão paralela e sequencial não sejam afetados pelos elementos nos vetores de cada versão.
+	
+	\begin{lstlisting}[style=C]
+srand(time(NULL));
+for (i = 0; i < size; i++) { //size é o tamanho do vetor
+	int random = rand() / 1000;
+	parallel_array[i] = random;
+	sequential_array[i] = random;
+}
+	\end{lstlisting}
+	
+	 
+	Como dito na sessão \ref{definitions}, o algoritmo de ordenação utilizado foi o \textit{Bucket Sort}. Para implementá-lo 

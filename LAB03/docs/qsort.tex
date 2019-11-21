@@ -1,2 +1,22 @@
 \section{\normalsize qsort()}
-	Trata-se de uma função disponibilizada pela biblioteca \textit{stdlib.h}
+	Trata-se de uma função disponibilizada pela biblioteca \textit{stdlib.h} utilizada para ordenação de vetores. Possuí a sintaxe:
+	\begin{lstlisting}[style=C]
+void qsort(void *base, size_t nitems, size_t size, int (*compar)(const void* p1, const void* p2))
+	\end{lstlisting}
+	
+	Onde:
+	\begin{itemize}
+		\item \textit{*base}:\\Ponteiro para o primeiro elemento do vetor;
+		\item \textit{nitems}:\\Número de elementos do vetor;
+		\item \textit{size}:\\Tamanho em \textit{bytes} de cada elemento do vetor, é, obrigatoriamente, um inteiro positivo e
+		\item \textit{*compar}:\\Função criada para o problema e que compara dois elementos.
+	\end{itemize}
+	
+	A função \textit{*compar} é o que garante o polimorfismo dessa função, uma vez que se trata de um ponteiro para outra função, que é definida pelo desenvolvedor e que, portanto, pode ser implementada para ordenar qualquer tipo de dado.
+	
+	A função que o ponteiro da função \textbf{qsort} apontar será chamada sempre com dois elementos e seu retorno ditará se os elementos serão trocados de lugar ou não. Para ficar mais claro, os valores de retorno da função explicitada são:
+	\begin{itemize}
+		\item <0:\\O elemento apontado por \textit{p1} vai antes do elemento apontado por \textit{p2}.
+		\item 0:\\O elemento apontado por \textit{p1} é equivalente ao elemento apontado por \textit{p2}.
+		\item >0:\\O elemento apontado por \textit{p1} vai depois do elemento apontado por \textit{p2}.
+	\end{itemize}

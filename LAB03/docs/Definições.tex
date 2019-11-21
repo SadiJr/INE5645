@@ -1,11 +1,11 @@
-\section{\normalsize DEFINIÇÃO DO ESTUDO}
+\section{\normalsize DEFINIÇÃO DO ESTUDO} \label{definitions}
 	O presente relatório buscará analisar o desempenho de uma aplicação responsável por ordenar um vetor de inteiros em sua implementação paralela em comparação com sua implementação sequencial.
 	
 	Para isso, os seguintes critérios foram seguidos:
 	\begin{itemize}
 		\item A aplicação foi inteiramente escrita na linguagem C.
 		\item Foi utilizada a biblioteca OpenMPI para realizar a comunicação entre os diferentes processos.
-		\item O algoritmo de ordenação usado foi o \textit{bucket sort}, para a classificação dos dados, e a função \textit{qsort()} para a ordenação dos mesmos.
+		\item O algoritmo de ordenação usado foi o \textit{Bucket Sort}, para a classificação dos dados, e a função \textit{qsort()} para a ordenação dos mesmos.
 		\item Tanto a versão paralela quanto a versão sequencial ordenam o mesmo conjunto de dados (copiados para ambas as versões) e utilizam o mesmo número de \textit{buckets}, com o objetivo de os resultados não serem prejudicados por diferenças nas implementações\footnote{afora o paralelismo, é claro.}. 
 		\item Foram escritos duas aplicação para realizar essa análise, uma delas dando prioridade para o processamento dos dados e outra priorizando a otimização de memória.
 	\end{itemize}
