@@ -1,7 +1,7 @@
 \section{\normalsize MPI (\textit{MESSAGE PASSING INTERFACE})}\label{mpi}
 	O  MPI é um padrão de interface voltado para a troca de mensagens em máquinas paralelas com memória distribuída. Apesar de alguns pensarem dessa forma, o MPI não é um compilador ou um produto específico. Além disso, o MPI também fornece suporte à troca de mensagens entre máquinas com memória compartilhada.
 	
-	No padrão MPI, uma aplicação é constituída por um ou mais processos que se comunicam, acionando-se funções para o envio e recebimento de mensagens entre os processos. Inicialmente, na maioria das implementações, um conjunto fixo de processos é criado. Porém, esses processos podem executar diferentes programas. Por isso, o padrão MPI é algumas vezes referido como MPMD (\textit{Multiple Program Multiple Data}).
+	No padrão MPI, uma aplicação é constituída por um ou mais processos que se comunicam através da invocação de funções para o envio e recebimento de mensagens entre si. Inicialmente, na maioria das implementações, um conjunto fixo de processos é criado. Porém, esses processos podem executar diferentes programas. Por isso, o padrão MPI é algumas vezes referido como MPMD (\textit{Multiple Program Multiple Data}).
 
 	Elementos importantes em implementações paralelas são a comunicação de dados entre processos paralelos e o balanceamento da carga. É importante frisar que o número de processos no MPI normalmente é fixo. Dito isso, tais processos podem usar mecanismos de comunicação ponto a ponto (operações para enviar mensagens de um determinado processo a outro), ou coletivas, na qual um grupo de processos pode invocar operações coletivas de comunicação para executar operações globais. 
 
@@ -13,8 +13,8 @@
 
 	\subsection{\normalsize FUNÇÕES USADAS}\label{mpi}
 		O MPI apresenta uma grande gama de funções que implementam diferentes formas de envio de mensagens entre processos. Dito isso, apenas duas dessas funções\footnote{aqui não está sendo considerado as funções de inicialização do MPI, vide:\\
-		MPI\_Init (\&argc, \&argv);
-		MPI\_Comm\_size (comm, \&size) e
+		MPI\_Init (\&argc, \&argv);\\
+		MPI\_Comm\_size (comm, \&size) e\\
 		MPI\_Comm\_rank (comm, \&rank)} foram utilizadas neste trabalho, melhor detalhadas nas subsubseções abaixo.
 		
 		\subsubsection{\normalsize \textit{MPI\_Send(void* data, int count, MPI\_Datatype datatype, int destination, int tag, MPI\_Comm communicator)}}\label{send}
@@ -52,7 +52,7 @@
 					Variável personalizável, podendo ser usada para, de acordo com o valor, implementar diferentes ações no receptor. Uma questão importante é que a mensagem só será recepcionada se o valor da \textit{tag} for o mesmo no emissor e no receptor da mensagem.
 					
 				\item \textit{MPI\_Comm communicator}:\\
-							Identifica um grupo específico de nodos para o qual a mensagem será enviada.	
+							Identifica um grupo específico de processos para o qual a mensagem será enviada.	
 			\end{itemize}
 			
 		\subsubsection{\normalsize \textit{MPI\_Recv(void* data, int count, MPI\_Datatype datatype, int source, int tag, MPI\_Comm communicator, MPI\_Status* status)}}\label{recv}
@@ -62,7 +62,7 @@
 					É um ponteiro que indica o local de memória no qual a mensagem recebida será armazenada.
 				
 				\item \textit{int count}:\\
-					Variável que armazenará o tamanho do dado recebido.
+					Variável que pode ser utilizada para armazenar o tamanho do dado recebido, ou para indicar o tamanho total que se espera receber.
 					
 				\item \textit{MPI\_Datatype datatype}:\\
 					Equivalente ao do \textit{MPI\_Send}.
@@ -73,7 +73,7 @@
 				\item \textit{int tag}:\\
 					Equivalente ao do \textit{MPI\_Send}.
 					
-				\item \textit{MPI\_Comm communicator}:
+				\item \textit{MPI\_Comm communicator}:\\
 					Equivalente ao do \textit{MPI\_Send}.
 				
 				\item \textit{MPI\_Status* status}:\\

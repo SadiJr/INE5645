@@ -14,9 +14,9 @@ for (i = 0; i < size; i++) { //size é o tamanho do vetor
 	parallel_array[i] = random;
 	sequential_array[i] = random;
 }
-	\end{lstlisting}
+\end{lstlisting}
 	
-	Como dito na sessão \ref{definitions}, o algoritmo de ordenação utilizado foi o \textit{Bucket Sort}\footnote{usado para classificação} junto com o algoritmo \textit{Quick Sort}\footnote{implementado usando a função \textit{qsort()}}. Para garantir que as versões paralela e sequencial criassem e ordenassem o mesmo número de \textit{buckets} usando o mesmo método de inserção, foi definido que o número de \textit{buckets} é equivalente ao número de processos disponíveis na versão paralela (incluso o mestre).
+	Como dito na sessão \ref{definitions}, o algoritmo de ordenação utilizado foi o \textit{Bucket Sort}\footnote{usado para classificação} junto com a função \textit{qsort()}\footnote{usada para ordenação}. Para garantir que as versões paralela e sequencial criassem e ordenassem o mesmo número de \textit{buckets} usando o mesmo método de inserção, foi definido que o número de \textit{buckets} é equivalente ao número de processos disponíveis na versão paralela (incluso o mestre).
 	
 	Isso foi feito para garantir que a versão sequencial não obtivesse um desempenho inferior por ficar, recursivamente, dividindo o vetor original em \textit{buckets}, o que implica em alocar memória e inserir, através do cálculo apresentado na sessão \ref{bucket}, os elementos em cada novo \textit{bucket} criado.
 		
@@ -26,7 +26,7 @@ for (i = 0; i < size; i++) { //size é o tamanho do vetor
 	
 		\subsubsection{\normalsize IMPLEMENTAÇÃO PARALELA}
 			Primeiramente, como era de se esperar, apenas o nodo mestre possuí o vetor original. Esse nodo também é o responsável, ao final da execução paralela, por executar a versão sequencial do algoritmo. Isso é garantido através da condicional:
-			
+			\newpage
 			\begin{lstlisting}[style=C] 			
 if(rank = = 0) {
 	criação e população dos vetores (paralelo e sequencial)
@@ -39,18 +39,16 @@ if(rank = = 0) {
 }
 \end{lstlisting}
 			
-			O nodo mestre é o único responsável por criar os \textit{buckets} e inserir os elementos neles. Para isso, o mesmo possuí duas variáveis, sendo uma delas um vetor de inteiros\footnote{a partir desse ponto, referenciado como \textit{bucket\_sizes}} cujo tamanho é equivalente ao número de processos existentes(incluso o nodo mestre), e a outra sendo um vetores com ponteiros para inteiros\footnote{a partir desse ponto referenciado como \textit{*short\_bucket}. Perceba que o símbolo * permanece, isso foi feito para ser um constante lembrete para o leitor de que tal variável se trata de vetor de ponteiros}, novamente sendo esse vetor com tamanho equivalente ao número de processos.
+			O nodo mestre é o único responsável por criar os \textit{buckets} e inserir os elementos neles. Para isso, o mesmo possuí duas variáveis, sendo uma delas um vetor de inteiros\footnote{a partir desse ponto, referenciado como \textit{bucket\_sizes}} cujo tamanho é equivalente ao número de processos existentes(incluso o nodo mestre), e a outra sendo um vetores com ponteiros para inteiros\footnote{a partir desse ponto referenciado como \textit{*short\_bucket}.\\Perceba que o símbolo * permanece, isso foi feito para ser um constante lembrete para o leitor de que tal variável se trata de um vetor de ponteiros}, novamente sendo esse vetor com tamanho equivalente ao número de processos.
 			
 			
 			O \textit{bucket\_sizes} serve para armazer o tamanho do \textit{bucket} que cada processo irá receber. Em outras palavras, cada posição desse vetor(0 até \textit{n}) é corresponde à um processo. Já o \textit{*short\_bucket} é quem irá armazenar os \textit{buckets} e seus elementos, sendo que a mesma lógica do \textit{bucket\_sizes} se aplica à ele.
 			
 			Dessa forma, tem-se que o processo 1 irá ordenar o \textit{bucket} armazenado na posição 1 do vetor \textit{*short\_bucket}, sendo que o tamanho desse vetor está armazenado na posição 1 do vetor \textit{bucket\_sizes}.
 			
-			Dados esse dados, primeiramente o nodo mestre irá enviar para os processos 1 até \textit{n}, o tamanho de vetor que os mesmos irão receber e ordenar. Após o mestre receber a confirmação de que cada nodo escravo\footnote{a partir desse ponto, o(s) termo(s) nodo mestre e/ou processo mestre será(ão) substituído(s) por apenas mestre e o(s) termo(s) nodo(s) escravo(s) e/ou processo(s) escravo(s) irá(ão) ser substituído(s) por escravo(s)} recebeu sua mensagem, o mesmo, então, envia para os escravos seus respectivos \textit{buckets}\footnote{\textit{*short\_bucket}[1..\textit{n}}. Após ter enviado para cada escravo seu respectivo \textit{bucket}, o mestre então trata de ordenar o \textit{bucket} 0. 
+			Dados esse dados, primeiramente o nodo mestre irá enviar para os processos 1 até \textit{n}, o tamanho de vetor que os mesmos irão receber e ordenar. Após o mestre receber a confirmação de que cada nodo escravo\footnote{a partir desse ponto, o termo nodo mestre e/ou processo mestre será substituído por apenas mestre e o(s) termo(s) nodo(s) escravo(s) e/ou processo(s) escravo(s) irá(ão) ser substituído(s) por escravo(s)} recebeu sua mensagem, o mesmo, então, envia para os escravos seus respectivos \textit{buckets}\footnote{\textit{*short\_bucket}[1..\textit{n}]}. Após ter enviado para cada escravo seu respectivo \textit{bucket}, o mestre então trata de ordenar o \textit{bucket} 0. 
 
-			Note que essa estratégia possibilita que, ao invés de o mestre, após o envio de todos os dados necessário para os escravos, ficar simplesmente ocioso, esperando que cada escravo finalize seu trabalho e envie para o mestre o \textit{bucket} que o mesmo ficou responsável por ordenar, para só então realocá-los no vetor original e assim encerrar o processo. 
-			
-			Ao invés disso, como desde o princípio o mestre foi incluído no cálculo do tamanho e inserção de elementos nos \textit{buckets}, o mesmo, após enviar todas as informações necessárias para os escravos começarem seu processamento, trata de ordenar um dos \textit{buckets}, o que, além de impedir a ociosidade do mestre, acrescenta ao rol de nodos mais um para realizar o processamento dos dados, o que possibilita um aumento, pequeno ou grande\footnote{esse aumento depende do tamanho do vetor original}, na velocidade de resposta do algoritmo.
+			Note que essa estratégia impede que o mestre fique ocioso, esperando o retorno dos escravos para só então prosseguir com a concatenação dos \textit{buckets}.	Ao invés disso, como desde o princípio o mestre foi incluído no cálculo do tamanho e inserção de elementos nos \textit{buckets}, o mesmo, após enviar todas as informações necessárias para os escravos começarem seu processamento, trata de ordenar um dos \textit{buckets}, o que, além de impedir a ociosidade do mestre, acrescenta ao rol de processos mais um para realizar o processamento dos dados, o que possibilita um aumento, pequeno ou grande\footnote{esse aumento depende do tamanho do vetor original}, na velocidade de resposta do algoritmo.
 		
 			O código abaixo exemplifica esse processo:			
 			\newpage
@@ -61,7 +59,7 @@ for (i = 1; i < numprocs; i++) { /* numprocs aqui representa o número total de 
 	MPI_Send(&bucket_sizes[i], 1, MPI_INT, i, 0, MPI_COMM_WORLD); 
 
 	/* Mestre enviado para os escravos seus respectivos buckets.
-	Para maiores informações sobre a função MPI_Send favor rever a sessão !\textcolor{mGreen}{\ref{send}}! */
+	Para maiores informações sobre a função MPI_Send favor rever a seção !\textcolor{mGreen}{\ref{send}}! */
 	MPI_Send(short_bucket[i], bucket_sizes[i], MPI_INT, i, 0,MPI_COMM_WORLD);
 	
 	quick_sort(short_bucket[0], bucket_sizes[0]); // Ordenação do bucket 0
@@ -74,14 +72,14 @@ for (i = 1; i < numprocs; i++) { /* numprocs aqui representa o número total de 
 			
 			O código abaixo exemplifica esse processo:
 			\begin{lstlisting}[style=C]		
-if(tank = = 0) {
+if(rank = = 0) {
 	// Execução do mestre
 	...
 } else {
 	MPI_Recv(&size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status); 
 	/* Escravo recebe do mestre a informação  de qual o tamanho de seu bucket e armazena essa informação na variável size.
 	
-	Para maiores informações sobre a função MPI_Recv favor rever a sessão !\textcolor{mGreen}{\ref{recv}}! */
+	Para maiores informações sobre a função MPI_Recv favor rever a seção !\textcolor{mGreen}{\ref{recv}}! */
 	
 	int *bucket = (int *)malloc(sizeof(int) * size); 
 	/* Escravo aloca uma área de memória para armazenar seu bucket quando o receber do mestre */ 
@@ -97,7 +95,7 @@ if(tank = = 0) {
 			
 			Voltando para o mestre, após terminar de ordenar seu \textit{bucket}, o mesmo irá aguardar receber dos escravos os \textit{buckets} para eles enviados. É importante ressaltar que o mestre recebe os \textit{buckets} na mesma ordem em que ele os enviou, ou seja, primeiramente o mestre recebe o \textit{bucket} enviado ao processo 1, por mais que outro processo qualquer tenha terminado sua tarefa mais cedo e esteja a mais tempo tentando enviar seu \textit{bucket} para o mestre. Além disso, o mestre não apenas recebe os \textit{buckets} na ordem na qual os envio, como também armazena cada vetor recebido na exata posição do vetor \textit{short\_bucket} no qual o mesmo estava originalmente. Isso é possível graças ao fato de que cada processo recebe o \textit{bucket} equivalente à seu rank e, portanto, ao enviar o \textit{bucket} de volta ao mestre, o mesmo só precisa usar o rank do emissor da mensagem para determinar a posição do \textit{bucket} recebido no vetor de \textit{buckets} original.
 			
-			Finalmente, após receber todos os \textit{buckets}, o mestre concatena os \textit{buckets} em um único vetor, que, graças ao método de inserção do \textit{Bucket Sort}\ref{classification}, já estará ordenado. Feito tudo isso, o mestre calcula quanto tempo durou todo esse processamento e, então, passa a executar, sozinho, a versão sequencial do programa.
+			Finalmente, após receber todos os \textit{buckets}, o mestre concatena os \textit{buckets} em um único vetor, que, graças ao método de inserção do \textit{Bucket Sort}, melhor explicado na seção \ref{classification}, já estará ordenado. Feito tudo isso, o mestre calcula quanto tempo durou todo esse processamento e, então, passa a executar, sozinho, a versão sequencial do programa.
 			
 			O código abaixo exemplifica esse processo:
 			\begin{lstlisting}[style=C]
@@ -118,11 +116,11 @@ for (i = 0; i < numprocs; i++) {
 \end{lstlisting}
 
 	\subsection{\normalsize SOBRE AS SOLUÇÕES PERSONALIZADAS DO PROBLEMA}\label{personal}
-		Conforme mencionado na seção\ref{definitions}, foram realizadas duas implementações da aplicação. Em ambas foram implementadas a versão sequencial e paralela. Além disso, o funcionamento de ambas as implementações, em síntese, é o mesmo na seção anterior a essa. A diferença entre essas implementações consiste no modo como os \textit{buckets} são alocados.
+		Conforme mencionado na seção \ref{definitions}, foram realizadas duas implementações da aplicação. Em ambas foram implementadas a versão sequencial e paralela. Além disso, o funcionamento de ambas as implementações, em síntese, é o mesmo apresentado na seção anterior a essa. A diferença entre essas implementações consiste no modo como os \textit{buckets} são alocados.
 		
-		A primeira implementação\footnote{contida no arquivo \textbf{mpi\_process\_priority.c}}, aloca, para cada \textit{bucket}, o tamanho equivalente ao vetor original. Ao fazer isso, adquire-se um pequeno desempenho, uma vez que, mesmo não sabendo qual o tamanho de cada \textit{bucket}, se sabe que o mesmo não pode ser maior que o vetor original. Assim, é garantido que o cálculo para inserir os elementos nos \textit{buckets}, que, conforme explicado na seção\ref{complex}, possuí complexidade  $\therefore(n)$, será executado apenas uma única vez. Essa solução, apesar de aumentar o desempenho da aplicação, se torna inviável em casos no qual o vetor é extremamente grande e existem dois ou mais processos, uma vez que a memória necessária para alocar os \textit{buckets} pode ser superior à memória real da máquina.
+		A primeira implementação\footnote{contida no arquivo \textbf{mpi\_process\_priority.c}}, aloca, para cada \textit{bucket}, o tamanho equivalente ao vetor original. Ao fazer isso, adquire-se um pequeno desempenho, uma vez que, mesmo não sabendo qual o tamanho de cada \textit{bucket}, se sabe que o mesmo não pode ser maior que o vetor original. Assim, é garantido que o cálculo para inserir os elementos nos \textit{buckets}, que, conforme explicado na seção \ref{complex}, possuí complexidade  $\theta(n)$, será executado apenas uma única vez. Essa solução, apesar de aumentar o desempenho da aplicação, se torna inviável em casos no qual o vetor é extremamente grande e existem dois ou mais processos, uma vez que a memória necessária para alocar os \textit{buckets} pode ser superior à memória real da máquina.
 		
-		A segunda implementação\footnote{contida no arquivo \textbf{mpi\_memory\_priority.c}}, aloca a memória dos \textit{buckets} apenas após saber o tamanho exato de cada \textit{bucket}. Para isso, o cálculo de inserção é executado duas vezes, a primeira para determinar o tamanho dos \textit{buckets}, e a segundo para alocar os elementos em seus respectivos \textit{buckets}. Ao tratar a alocação de \textit{buckets} dessa forma, observa-se uma notável perda de desempenho da aplicação, mas ao mesmo tempo, se torna possível realizar a ordenação de vetores maiores do que o suportado pela primeira implementação. Essa solução é simplesmente essência em sistemas que operam com pouca memória, mas é completamente inútil em situações nas quais o sistema possuí uma quantidade absurda de memória e/ou o tamanho do vetor não é extremamente grande.
+		A segunda implementação\footnote{contida no arquivo \textbf{mpi\_memory\_priority.c}}, aloca a memória dos \textit{buckets} apenas após saber o tamanho exato de cada \textit{bucket}. Para isso, o cálculo de inserção é executado duas vezes, a primeira para determinar o tamanho dos \textit{buckets}, e a segunda para alocar os elementos em seus respectivos \textit{buckets}. Ao tratar a alocação de \textit{buckets} dessa forma, observa-se uma notável perda de desempenho da aplicação, mas ao mesmo tempo, se torna possível realizar a ordenação de vetores maiores do que o suportado pela primeira implementação. Essa solução é simplesmente essencial em sistemas que operam com pouca memória, mas é completamente inútil em situações nas quais o sistema possuí uma quantidade absurda de memória e/ou o tamanho do vetor não é extremamente grande.
 
 		O código abaixo exemplifica isso:
 		\begin{lstlisting}[style=C]
@@ -160,10 +158,6 @@ for (i = 0; i < numprocs; i++) {
 		Algumas observações que são importantes frisar:
 		
 		\begin{itemize}
-			\item A inicialização do MPI é realizada antes de se iniciar a análise do tempo de processamento.
-			\item A alocação de memória para o vetor original assim como a inserção de elementos aleatórios no mesmo, tanto na versão paralela quanto na sequencial, são realizadas antes de se iniciar a análise do tempo de processamento 
-			\item Todos os \textit{outputs} da aplicação estão inseridos em partes do código nas quais ou a análise de tempo de processamento já encerrou ou a mesma ainda não foi iniciada, de forma que tais \textit{outputs} em nada interferem no desempenho final da aplicação.
-			\item Os \textit{outputs} que mostravam o vetor antes e depois de ser ordenado, tanto na versão paralela quanto na sequencial, apesar de estarem em partes não críticas do código\footnote{vide item superior} foram comentados para evitar poluição visual\footnote{em casos de vetores com tamanho elevado}. Os mesmos podem ser descomentados à vontade.
 			\item O código fonte contém alguns comentários que explicam, de forma breve, as partes principais da aplicação. Tais comentário, para facilitar a localização, estão no estilo de múltiplas linhas(\textit{/*comentário*/}).
 			
 			\item Com o intuito de facilitar a leitura do código fonte, todas as partes do código que foram possíveis de serem convertidas em funções, o foram.

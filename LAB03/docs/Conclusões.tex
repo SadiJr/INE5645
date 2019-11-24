@@ -1,10 +1,8 @@
 \section{\normalsize CONCLUSÕES}
-	Como era de se esperar, a implementação paralela só obteve melhor desempenho sobre a sequencial quando o tamanho do vetor era relativamente grande, o que confirma que o processamento paralelo de dados só é vantajoso quando existe uma quantidade absurda de dados para serem processados. Além disso, outras confirmações já amplamente conhecidas foram, novamente, confirmadas:
-	\begin{itemize}
-		\item Uma quantidade absurda de processos não adiciona nenhum ganho de desempenho quando o vetor é pequeno, muito pelo contrário, acarretando, não raramente, em perda de desempenho. Conclusão já conhecida: \textit{speedup} linear é algo quase, se não, impossível de ocorrer na prática.
-		
-	\end{itemize}
+	Como era de se esperar, a implementação paralela só obteve melhor desempenho sobre a sequencial quando o tamanho do vetor era relativamente grande, o que confirma que o processamento paralelo de dados só é vantajoso quando existe uma quantidade absurda de dados para serem processados. 
 	
-	Fora isso, em todas as execuções foi comprovado que a implementação que se utiliza da estratégia de alocação de \textit{buckets} ``não precisa''\ref{personal} possuí desempenho superior ao da implementação com alocação exata de \textit{buckets}. Em compensação, foi comprovado que a implementação que utiliza a estratégia com melhor gerência de memória é capaz de processar uma quantidade maior de dados sem resultar em estouros de memória ou travamento da máquina, cenário não tão incomum para a outra solução.
+	Além disso, pode-se observar que esse algoritmo não possibilita \textit{speedup} linear, uma vez que, dependendo do tamanho do vetor, acrescentar mais processos acarreta em perda de desempenho. Isso pode ser facilmente observável nos vetores de tamanho 100 e 10, onde, ao acrescentar mais processos, se obteve uma perda de desempenho considerável.
+	
+	Fora isso, em todas as execuções foi comprovado que a implementação que se utiliza da estratégia de alocação de \textit{buckets} sem gerência precisa de memória, melhor explicada na seção \ref{personal}, possuí desempenho superior ao da implementação com alocação exata de \textit{buckets}. Em compensação, foi comprovado que a implementação que utiliza a estratégia com melhor gerência de memória é capaz de processar uma quantidade maior de dados sem resultar em estouros de memória ou travamento da máquina, cenário não tão incomum para a outra solução.
 	
 	Para maiores informações a respeito dos resultados obtidos, favor ler os logs das aplicações, que se encontram no arquivo anexado.
