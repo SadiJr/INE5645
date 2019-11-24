@@ -15,10 +15,12 @@ import org.apache.hadoop.mapreduce.lib.jobcontrol.JobControl;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
+import com.ufsc.ine5645.hadoop.mappers.ExpensesPerPeriodMapper;
 import com.ufsc.ine5645.hadoop.mappers.ParliamentarySpendingMapper;
 import com.ufsc.ine5645.hadoop.mappers.PartyMapper;
 import com.ufsc.ine5645.hadoop.mappers.ProductParliamentarySpendingMapper;
 import com.ufsc.ine5645.hadoop.mappers.SalesMapper;
+import com.ufsc.ine5645.hadoop.reducers.ExpensesPerPeriodReducer;
 import com.ufsc.ine5645.hadoop.reducers.ParliamentarySpendingReducer;
 import com.ufsc.ine5645.hadoop.reducers.PartyReducer;
 import com.ufsc.ine5645.hadoop.reducers.ProductParliamentarySpendingReducer;
@@ -130,8 +132,8 @@ public class App {
 			FileInputFormat.addInputPath(job, new Path(args[0]));
 			FileOutputFormat.setOutputPath(job, new Path(args[1], "per-period"));
 
-			job.setMapperClass(SalesMapper.class);
-			job.setReducerClass(SalesReducer.class);
+			job.setMapperClass(ExpensesPerPeriodMapper.class);
+			job.setReducerClass(ExpensesPerPeriodReducer.class);
 			job.setOutputKeyClass(Text.class);
 			job.setOutputValueClass(DoubleWritable.class);
 			job.setInputFormatClass(TextInputFormat.class);
