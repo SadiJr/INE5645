@@ -180,7 +180,7 @@ int main(int argc, char **argv) {
     int *parallel_array = NULL;
     int *sequential_array = NULL;
 
-    printf("\nNumber of slayers (in parallel process) and buckets (in sequential process): %d\nArray size: %d\n", numprocs, size);
+    printf("Number of slayers (in parallel process) and buckets (in sequential process): %d\nArray size: %d\n", numprocs, size);
 
     parallel_array = (int *)malloc(sizeof(int) * size);
     sequential_array = (int *)malloc(sizeof(int) * size);
@@ -198,15 +198,14 @@ int main(int argc, char **argv) {
     // printf("Array created is:\n");
     // print_array(parallel_array, size);
 
-    printf("\nStarting parallel processing...\n");
+    printf("Starting parallel processing...\n");
     parallel_sort(parallel_array, size, numprocs, status);
 
     printf("Starting sequential process...\n");
     // print_array(sequential_array, size);
 
     sequential_sort(sequential_array, size, numprocs);
-
-    printf("Speedup is %f", sequential/parallel);
+    printf("Speedup is %f\n\n", sequential/parallel);
   } else {
     int size;
     MPI_Status status;
