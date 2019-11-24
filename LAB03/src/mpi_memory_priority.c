@@ -57,7 +57,6 @@ void parallel_sort(int *parallel_array, int size, int numprocs, MPI_Status statu
   unsigned int max = get_max(parallel_array, size);
   unsigned int min = get_min(parallel_array, size);
 
-  /*Alloc memory for buckets and initialize the size on 0*/
   for (i = 0; i < numprocs; i++) {
     bucket_sizes[i] = 0;
     bucket_sizes_temp[i] = 0;
@@ -107,6 +106,9 @@ void parallel_sort(int *parallel_array, int size, int numprocs, MPI_Status statu
   // print_array(parallel_array, size);
   parallel = end_time - start_time;
   printf("Total time in parallel process: %f seconds\n\n\n", parallel);
+
+  free(parallel_array);
+  free(*short_bucket);
 }
 
 void sequential_sort(int *sequential_array, int size, int buckets) {
@@ -161,6 +163,9 @@ void sequential_sort(int *sequential_array, int size, int buckets) {
     
   // print_array(sequential_array, size);
   printf("Total time in sequential process: %f seconds\n", sequential);
+
+  free(sequential_array);
+  free(*short_bucket);
 }
 
 int main(int argc, char **argv) {
@@ -227,12 +232,13 @@ int main(int argc, char **argv) {
 
     /*Alloc memory and receive the bucket*/
     int *bucket = (int *)malloc(sizeof(int) * size);
-
+  
     MPI_Recv(bucket, size, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 
     quick_sort(bucket, size);
 
     MPI_Send(bucket, size, MPI_INT, 0, 0, MPI_COMM_WORLD);
+    free(bucket);
   }
   MPI_Finalize();
   return 0;

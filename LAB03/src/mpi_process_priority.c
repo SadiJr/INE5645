@@ -98,6 +98,9 @@ void parallel_sort(int *parallel_array, int size, int numprocs, MPI_Status statu
   // print_array(parallel_array, size);
   parallel = end_time - start_time;
   printf("Total time in parallel process: %f seconds\n\n", parallel);
+
+  free(parallel_array);
+  free(*short_bucket);
 }
 
 void sequential_sort(int *sequential_array, int size, int buckets) {
@@ -142,6 +145,9 @@ void sequential_sort(int *sequential_array, int size, int buckets) {
     
   // print_array(sequential_array, size);
   printf("Total time in sequential process: %f seconds\n", sequential);
+
+  free(sequential_array);
+  free(*short_bucket);
 }
 
 int main(int argc, char **argv) {
@@ -216,6 +222,7 @@ int main(int argc, char **argv) {
     quick_sort(bucket, size);
 
     MPI_Send(bucket, size, MPI_INT, 0, 0, MPI_COMM_WORLD);
+    free(bucket);
   }
   MPI_Finalize();
   return 0;
