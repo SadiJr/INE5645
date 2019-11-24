@@ -2,7 +2,7 @@
 	Trata-se de uma função disponibilizada pela biblioteca \textit{stdlib.h} utilizada para ordenação de vetores. Possuí a sintaxe:
 	\begin{lstlisting}[style=C]
 void qsort(void *base, size_t nitems, size_t size, int (*compar)(const void* p1, const void* p2))
-	\end{lstlisting}
+\end{lstlisting}
 	
 	Onde:
 	\begin{itemize}
@@ -16,7 +16,7 @@ void qsort(void *base, size_t nitems, size_t size, int (*compar)(const void* p1,
 	
 	A função que o ponteiro da função \textbf{qsort} apontar será chamada sempre com dois elementos e seu retorno ditará se os elementos serão trocados de lugar ou não. Para ficar mais claro, os valores de retorno da função explicitada são:
 	\begin{itemize}
-		\item <0:\\O elemento apontado por \textit{p1} vai antes do elemento apontado por \textit{p2}.
+		\item Menor que 0 ( < 0):\\O elemento apontado por \textit{p1} vai antes do elemento apontado por \textit{p2}.
 		\item 0:\\O elemento apontado por \textit{p1} é equivalente ao elemento apontado por \textit{p2}.
-		\item >0:\\O elemento apontado por \textit{p1} vai depois do elemento apontado por \textit{p2}.
+		\item Maior que 0 ( > 0):\\O elemento apontado por \textit{p1} vai depois do elemento apontado por \textit{p2}.
 	\end{itemize}
