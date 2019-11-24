@@ -1,10 +1,12 @@
-package com.ufsc.ine5645.hadoop;
+package com.ufsc.ine5645.hadoop.reducers;
 
 import java.io.IOException;
 
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+
+import com.ufsc.ine5645.hadoop.DoubleFormatHelper;
 
 public class ProductParliamentarySpendingReducer extends Reducer<Text, DoubleWritable, Text, Text> {
 	
@@ -23,8 +25,8 @@ public class ProductParliamentarySpendingReducer extends Reducer<Text, DoubleWri
 		average = total / occurrences;
 //		System.out.println("Total of " + key + " cost is " + total + " and average is " + average);
 
-		context.write(key, new Text("Total - " + total));
-		context.write(key, new Text("Average - " + average));
+		context.write(key, new Text("Total - " + DoubleFormatHelper.parseToString(total)));
+		context.write(key, new Text("Average - " + DoubleFormatHelper.parseToString(average)));
 	}
 
 }

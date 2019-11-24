@@ -15,6 +15,15 @@ import org.apache.hadoop.mapreduce.lib.jobcontrol.JobControl;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
+import com.ufsc.ine5645.hadoop.mappers.ParliamentarySpendingMapper;
+import com.ufsc.ine5645.hadoop.mappers.PartyMapper;
+import com.ufsc.ine5645.hadoop.mappers.ProductParliamentarySpendingMapper;
+import com.ufsc.ine5645.hadoop.mappers.SalesMapper;
+import com.ufsc.ine5645.hadoop.reducers.ParliamentarySpendingReducer;
+import com.ufsc.ine5645.hadoop.reducers.PartyReducer;
+import com.ufsc.ine5645.hadoop.reducers.ProductParliamentarySpendingReducer;
+import com.ufsc.ine5645.hadoop.reducers.SalesReducer;
+
 public class App {
 	public static void main(String args[]) {
 		try {
@@ -49,7 +58,7 @@ public class App {
 			job.setOutputFormatClass(TextOutputFormat.class);
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(DoubleWritable.class);
-			job.setNumReduceTasks(4);
+			job.setNumReduceTasks(1);
 			job.waitForCompletion(true);
 
 			// Job2
@@ -69,7 +78,7 @@ public class App {
 			job.setOutputFormatClass(TextOutputFormat.class);
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(DoubleWritable.class);
-			job.setNumReduceTasks(4);
+			job.setNumReduceTasks(1);
 			job.waitForCompletion(true);
 
 			// Job3
@@ -89,7 +98,7 @@ public class App {
 			job.setOutputFormatClass(TextOutputFormat.class);
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(DoubleWritable.class);
-			job.setNumReduceTasks(4);
+			job.setNumReduceTasks(1);
 			job.waitForCompletion(true);
 
 			// Job4
@@ -109,7 +118,7 @@ public class App {
 			job.setOutputFormatClass(TextOutputFormat.class);
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(DoubleWritable.class);
-			job.setNumReduceTasks(4);
+			job.setNumReduceTasks(1);
 			job.waitForCompletion(true);
 
 			// Job5
@@ -129,7 +138,7 @@ public class App {
 			job.setOutputFormatClass(TextOutputFormat.class);
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(DoubleWritable.class);
-			job.setNumReduceTasks(4);
+			job.setNumReduceTasks(1);
 			job.waitForCompletion(true);
 
 //			job1(jobControl, job, config1, args);

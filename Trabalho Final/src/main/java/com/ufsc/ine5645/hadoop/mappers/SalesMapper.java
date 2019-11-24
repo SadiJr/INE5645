@@ -1,4 +1,4 @@
-package com.ufsc.ine5645.hadoop;
+package com.ufsc.ine5645.hadoop.mappers;
 
 import java.io.IOException;
 

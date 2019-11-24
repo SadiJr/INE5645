@@ -1,10 +1,12 @@
-package com.ufsc.ine5645.hadoop;
+package com.ufsc.ine5645.hadoop.reducers;
 
 import java.io.IOException;
 
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+
+import com.ufsc.ine5645.hadoop.DoubleFormatHelper;
 
 public class SalesReducer extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
 	
@@ -19,6 +21,6 @@ public class SalesReducer extends Reducer<Text, DoubleWritable, Text, DoubleWrit
 		
 //		System.out.println("Total product " + key + " is - " + total);
 
-		context.write(key, new DoubleWritable(total));
+		context.write(key, new DoubleWritable(DoubleFormatHelper.parseToDouble(total)));
 	}
 }

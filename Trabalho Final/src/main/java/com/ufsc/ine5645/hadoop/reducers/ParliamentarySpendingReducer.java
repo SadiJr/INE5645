@@ -1,10 +1,12 @@
-package com.ufsc.ine5645.hadoop;
+package com.ufsc.ine5645.hadoop.reducers;
 
 import java.io.IOException;
 
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+
+import com.ufsc.ine5645.hadoop.DoubleFormatHelper;
 
 public class ParliamentarySpendingReducer extends Reducer<Text, DoubleWritable, Text, Text>  {
 	
@@ -31,9 +33,9 @@ public class ParliamentarySpendingReducer extends Reducer<Text, DoubleWritable, 
 //		System.out.println("Average Spend - " + averageSpend);
 //		System.out.println("Total - " + total);
 
-		context.write(key, new Text("Total - " + total));
-		context.write(key, new Text("Max - " + averageMax));
-		context.write(key, new Text("Min - " + averageMin));
-		context.write(key, new Text("Spend - " + averageSpend));
+		context.write(key, new Text("Total - " + DoubleFormatHelper.parseToString(total)));
+		context.write(key, new Text("Max - " + DoubleFormatHelper.parseToString(averageMax)));
+		context.write(key, new Text("Min - " + DoubleFormatHelper.parseToString(averageMin)));
+		context.write(key, new Text("Spend - " + DoubleFormatHelper.parseToString(averageSpend)));
 	}
 }
