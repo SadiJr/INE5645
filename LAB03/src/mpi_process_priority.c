@@ -97,7 +97,7 @@ void parallel_sort(int *parallel_array, int size, int numprocs, MPI_Status statu
   end_time = MPI_Wtime();
   // print_array(parallel_array, size);
   parallel = end_time - start_time;
-  printf("Total time in parallel process: %f seconds\n\n", parallel);
+  printf("Total parallel processing time using %d processes operating on a array of size %d: %f seconds\n\n", numprocs, size, parallel);
 
   free(parallel_array);
   free(*short_bucket);
@@ -144,7 +144,7 @@ void sequential_sort(int *sequential_array, int size, int buckets) {
   sequential = ((double)t) / CLOCKS_PER_SEC;
     
   // print_array(sequential_array, size);
-  printf("Total time in sequential process: %f seconds\n", sequential);
+  printf("Total sequential processing time using %d buckets operating on a array of size %d: %f seconds\n\n", buckets, size, sequential);
 
   free(sequential_array);
   free(*short_bucket);
@@ -205,7 +205,7 @@ int main(int argc, char **argv) {
     // print_array(sequential_array, size);
 
     sequential_sort(sequential_array, size, numprocs);
-    printf("Speedup is %f\n\n", sequential/parallel);
+    printf("In an environment with %d processes operating over a array of size %d, the speedup was: %f\n\n", numprocs, size, sequential/parallel);
   } else {
     int size;
     MPI_Status status;
