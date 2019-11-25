@@ -1,9 +1,0 @@
-https://www.smaizys.com/programing/bucket-sort-parallel-algorithm-using-c-openmpi/
-http://penguin.ewu.edu/~trolfe/ParallelMerge/ParallelMerge.html
-https://www.codeproject.com/articles/42311/parallel-quicksort-using-mpi-performance-analysis
-http://charm.cs.illinois.edu/newPapers/10-42/bucket_2010.pdf
-https://www.osti.gov/servlets/purl/754815
-https://pdfs.semanticscholar.org/ba11/dc7927349f7ba0ea80d2ba5180e56390cea0.pdf
-https://github.com/tamaradanceva/ParallelSystems/blob/master/report.pdf
-https://www.programiz.com/dsa/bucket-sort
-https://cs.boisestate.edu/\~amit/teaching/530/handouts/bucketsort.pdf
