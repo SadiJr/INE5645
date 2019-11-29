@@ -192,6 +192,8 @@ public class App {
 //			job3(jobControl, args);
 //			job4(jobControl, args);
 //			job5(jobControl, args);
+//			job6(jobControl, args);
+//			job7(jobControl, args);
 
 //			new Thread(jobControl).start();
 //			while(!jobControl.allFinished()) {
